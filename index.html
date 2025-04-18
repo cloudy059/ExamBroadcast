@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语音播报系统</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="title">语音播报系统</h1>
+        </header>
+
+        <div class="time-section">
+            <div class="current-time" id="current-time">00:00:00</div>
+            <div class="date-info" id="date-info">2024年1月1日 星期一</div>
+            <div class="countdown" id="countdown">距离下一场考试开始: 00:00:00</div>
+        </div>
+
+        <div class="exam-section">
+            <div class="section-header">
+                <h2>考试安排</h2>
+                <button id="import-config" class="btn">导入配置</button>
+                <input type="file" id="config-file" accept=".json" style="display: none;">
+            </div>
+            <div class="exam-table-container">
+                <table class="exam-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>科目</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exam-list">
+                        <!-- 考试列表将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="reminder-section">
+            <div class="section-header">
+                <h2>提醒设置</h2>
+                <button id="add-reminder" class="btn">添加提醒</button>
+            </div>
+            <div class="reminder-form" id="reminder-form" style="display: none;">
+                <div class="form-group">
+                    <label for="reminder-type">提醒类别:</label>
+                    <select id="reminder-type">
+                        <option value="before-start">开考前</option>
+                        <option value="before-end">结束前</option>
+                        <option value="start">开始考试</option>
+                        <option value="end">结束考试</option>
+                    </select>
+                </div>
+                <div class="form-group" id="time-adjustment-group">
+                    <label for="time-adjustment">提前时间(分钟):</label>
+                    <input type="number" id="time-adjustment" min="1" max="60" value="10">
+                </div>
+                <div class="form-group">
+                    <label for="ringtone-name">铃声名称:</label>
+                    <input type="text" id="ringtone-name" value="默认铃声">
+                    <button id="select-ringtone" class="btn small">选择铃声</button>
+                    <input type="file" id="ringtone-file" accept="audio/*" style="display: none;">
+                    <button id="test-ringtone" class="btn small">试听</button>
+                </div>
+                <div class="form-actions">
+                    <button id="save-reminder" class="btn">保存</button>
+                    <button id="cancel-reminder" class="btn">取消</button>
+                </div>
+            </div>
+            <ul id="reminder-list" class="reminder-list">
+                <!-- 提醒列表将通过JavaScript动态生成 -->
+            </ul>
+        </div>
+    </div>
+
+    <audio id="audio-player" style="display: none;"></audio>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
