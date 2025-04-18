@@ -18,5 +18,7 @@
 - 所有提醒无需跳窗确认，当当前时间达到具体时间时播放提醒所设铃声
 - 点选择铃声按钮时可以自定义铃声
 - 按住拖拽按钮可以拖动提醒项来重新排序提醒列表
+## 使用说明
+- 考试相关信息从exam_config.json里修改设定
 ## 主页截图
 ![image](https://github.com/user-attachments/assets/ae36348f-ecec-4bc9-99aa-1eb233712bc1)
