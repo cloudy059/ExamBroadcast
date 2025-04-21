@@ -21,4 +21,4 @@
 ## 使用说明
 - 考试相关信息从exam_config.json里修改设定
 ## 主页截图
-![image](https://github.com/user-attachments/assets/ae36348f-ecec-4bc9-99aa-1eb233712bc1)
+![{C5785C34-A720-4119-8EC5-81AA3A3C0887}](https://github.com/user-attachments/assets/f8b14721-7ff2-43c9-966c-2a3c4cadded2)
