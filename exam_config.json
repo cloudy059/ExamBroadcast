@@ -1,41 +1,53 @@
 {
-  "title": "2026届高二年下学期十校联盟期中考试",
+  "title": "福建省2025年普通高校招生统一考试",
   "exams": [
     {
-      "date": "2025-04-24",
+      "date": "2025-06-07",
       "subject": "语文",
       "startTime": "09:00",
       "endTime": "11:30"
     },
     {
-      "date": "2025-04-24",
+      "date": "2025-06-07",
       "subject": "数学",
       "startTime": "15:00",
-      "endTime": "16:00"
+      "endTime": "17:00"
     },
     {
-      "date": "2025-04-25",
-      "subject": "英语",
-      "startTime": "08:00",
-      "endTime": "10:00"
-    },
-    {
-      "date": "2025-04-25",
+      "date": "2025-06-08",
       "subject": "物理/历史",
-      "startTime": "10:15",
-      "endTime": "11:30"
+      "startTime": "09:00",
+      "endTime": "10:15"
     },
     {
-      "date": "2025-04-25",
-      "subject": "化学1/政治1",
+      "date": "2025-06-08",
+      "subject": "外语",
+      "startTime": "15:00",
+      "endTime": "17:00"
+    },
+    {
+      "date": "2025-06-09",
+      "subject": "化学",
+      "startTime": "08:30",
+      "endTime": "09:45"
+    },
+    {
+      "date": "2025-06-09",
+      "subject": "地理",
+      "startTime": "11:00",
+      "endTime": "12:15"
+    },
+    {
+      "date": "2025-06-09",
+      "subject": "思想政治",
       "startTime": "14:30",
       "endTime": "15:45"
     },
     {
-      "date": "2025-04-25",
-      "subject": "生物2/政治2/地理2",
-      "startTime": "15:55",
-      "endTime": "17:10"
+      "date": "2025-06-09",
+      "subject": "生物",
+      "startTime": "17:00",
+      "endTime": "18:15"
     }
   ]
 }
