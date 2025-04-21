@@ -143,6 +143,9 @@ function handleConfigFileImport(event) {
             // 更新当前考试索引
             updateCurrentExamIndex();
             
+            // 更新所有提醒的时间
+            updateRemindersForNewExam();
+            
             alert('配置文件导入成功！');
         } catch (error) {
             console.error('解析配置文件失败:', error);
@@ -280,7 +283,8 @@ function saveReminder() {
         time: reminderTime,
         name: reminderName,
         ringtoneName: ringtoneName,
-        examIndex: currentExamIndex
+        examIndex: currentExamIndex,
+        paused: false // 添加暂停状态属性，默认为false
     };
     
     // 添加到提醒列表
@@ -432,6 +436,11 @@ function renderReminderList() {
         li.className = 'reminder-item';
         li.dataset.id = reminder.id;
         
+        // 添加暂停状态的样式
+        if (reminder.paused) {
+            li.classList.add('paused');
+        }
+        
         li.innerHTML = `
             <div class="drag-handle"><i class="fas fa-grip-lines"></i></div>
             <div class="reminder-info">
@@ -440,6 +449,9 @@ function renderReminderList() {
             </div>
             <div class="reminder-actions">
                 <button class="action-btn test" title="试听"><i class="fas fa-play"></i></button>
+                <button class="action-btn toggle-pause" title="${reminder.paused ? '恢复' : '暂停'}">
+                    <i class="fas ${reminder.paused ? 'fa-play-circle' : 'fa-pause-circle'}"></i>
+                </button>
                 <button class="action-btn edit" title="编辑"><i class="fas fa-edit"></i></button>
                 <button class="action-btn delete" title="删除"><i class="fas fa-trash"></i></button>
             </div>
@@ -448,6 +460,11 @@ function renderReminderList() {
         // 添加事件监听器
         li.querySelector('.action-btn.test').addEventListener('click', () => {
             playRingtone(reminder.ringtoneName);
+        });
+        
+        // 添加暂停/恢复按钮事件监听器
+        li.querySelector('.action-btn.toggle-pause').addEventListener('click', () => {
+            toggleReminderPause(reminder.id);
         });
         
         li.querySelector('.action-btn.edit').addEventListener('click', () => {
@@ -507,6 +524,16 @@ function deleteReminder(id) {
     renderReminderList();
 }
 
+// 切换提醒的暂停状态
+function toggleReminderPause(id) {
+    const reminder = reminders.find(r => r.id === id);
+    if (reminder) {
+        reminder.paused = !reminder.paused;
+        saveRemindersToStorage();
+        renderReminderList();
+    }
+}
+
 // 保存提醒到本地存储
 function saveRemindersToStorage() {
     localStorage.setItem('reminders', JSON.stringify(reminders));
@@ -542,10 +569,13 @@ function loadRemindersFromStorage() {
     if (savedReminders) {
         reminders = JSON.parse(savedReminders);
         
-        // 初始化announced属性
+        // 初始化announced和paused属性
         reminders.forEach(reminder => {
             if (reminder.announced === undefined) {
                 reminder.announced = false;
+            }
+            if (reminder.paused === undefined) {
+                reminder.paused = false;
             }
         });
         
@@ -561,6 +591,9 @@ function checkReminders() {
     const currentTimeStr = formatDateTimeForComparison(now);
     
     reminders.forEach(reminder => {
+        // 跳过已暂停的提醒
+        if (reminder.paused) return;
+        
         const reminderTimeStr = formatDateTimeForComparison(new Date(reminder.time));
         
         // 检查是否匹配当前时间且尚未播报
