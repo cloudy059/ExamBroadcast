@@ -235,6 +235,34 @@ h1 {
     color: #e53935;
 }
 
+.action-btn.toggle-pause {
+    color: #555; /* 与其他按钮相同的颜色 */
+}
+
+.action-btn.toggle-pause:hover {
+    color: #1e88e5; /* 与其他按钮相同的悬停颜色 */
+}
+
+/* 暂停状态下的按钮样式 */
+.reminder-item.paused .action-btn.toggle-pause {
+    color: #e53935; /* 红色 */
+}
+
+.reminder-item.paused .action-btn.toggle-pause:hover {
+    color: #c62828; /* 深红色 */
+}
+
+/* 暂停状态的提醒项样式 */
+.reminder-item.paused {
+    opacity: 0.6;
+}
+
+.reminder-item.paused .reminder-name::after {
+    content: " (已暂停)";
+    color: #ff5252;
+    font-style: italic;
+}
+
 @media (max-width: 768px) {
     .current-time {
         font-size: 2.5rem;
