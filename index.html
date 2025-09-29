@@ -3,85 +3,2432 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>语音播报系统</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>考试语音播报系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .control-buttons {
+            position: absolute;
+            top: 70px;
+            right: 0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: rgba(255,255,255,0.4);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .time-display {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 10px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .time-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(103, 126, 234, 0.1);
+            border-radius: 10px;
+            border: 2px solid rgba(103, 126, 234, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 120px;
+        }
+
+        .time-label {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .time-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-single {
+            margin-top: 10px;
+            transition: background-image 0.3s ease;
+        }
+
+
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            margin: 2px;
+        }
+
+        。btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        。btn-small {
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+
+        。btn-danger {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+        }
+
+        。btn-success {
+            background: linear-gradient(45deg, #51cf66, #40c057);
+        }
+
+        。btn-warning {
+            background: linear-gradient(45deg, #ffd43b, #fab005);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        。form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        。form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        。form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        。exam-item, .reminder-item {
+            background: rgba(103， 126， 234, 0.05);
+            border: 2px solid rgba(103， 126, 234, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: move;
+            transition: 全部 0.3s ease;
+        }
+
+        。exam-item:hover, .reminder-item:hover {
+            border-color: rgba(103， 126， 234， 0.3);
+            transform: translateY(-2px);
+        }
+
+        .exam-item.dragging, .reminder-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        。item-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        。item-details {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        。status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .status-upcoming {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-ongoing {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .status-finished {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .controls {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        。close:hover {
+            color: #000;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        。file-input {
+            display: none;
+        }
+
+        。file-label {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: 全部 0.3s ease;
+        }
+
+        。file-label:hover {
+            transform: translateY(-2px);
+        }
+
+        。progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        。import-export {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        。notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        。notification.show {
+            transform: translateX(0);
+        }
+
+        。notification。error {
+            background: #f44336;
+        }
+
+        .drag-over {
+            border-color: #667eea !important;
+        }
+
+        。dragging {
+            background: rgba(103, 126, 234, 0.1) !important;
+        }
+
+        /* 夜间模式样式 */
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        body.dark-mode .time-display,
+        body.dark-mode .section {
+            background: rgba(52, 73, 94, 0.95);
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .time-item {
+            background: rgba(52, 73, 94, 0.3);
+            border-color: rgba(52, 73, 94, 0.5);
+        }
+
+        body.dark-mode .time-label {
+            color: #3498db;
+        }
+
+        body.dark-mode .section-title {
+            color: #3498db;
+        }
+
+        body.dark-mode .form-group label {
+            color: #bdc3c7;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select {
+            background: rgba(52, 73, 94, 0.8);
+            border-color: rgba(52, 73, 94, 0.5);
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .exam-item,
+        body.dark-mode .reminder-item {
+            background: rgba(52, 73, 94, 0.3);
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            color: #ecf0f1;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4), inset 0 0 10px rgba(0, 212, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .exam-item:hover,
+        body.dark-mode .reminder-item:hover {
+            border-color: #00f5ff;
+            box-shadow: 0 0 25px rgba(0, 245, 255, 0.6), inset 0 0 15px rgba(0, 245, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        body.dark-mode .item-title {
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .item-details {
+            color: #bdc3c7;
+        }
+
+        /* 全屏模式样式 */
+        body.fullscreen-mode .header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1002;
+            margin-bottom: 0px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        body.fullscreen-mode .main-content {
+            display: none;
+        }
+
+        body.fullscreen-mode .time-display {
+            position: fixed;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1100px;
+            z-index: 1000;
+            padding: 25px;
+            box-sizing: border-box;
+        }
+
+        body.fullscreen-mode .time-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        body.fullscreen-mode .time-item {
+            min-height: 120px;
+            padding: 15px;
+            overflow: hidden;
+        }
+
+        body。fullscreen-mode 。time-label {
+            font-size: 1.8em;
+        }
+
+        body.fullscreen-mode .time-value {
+            font-size: 2.5em;
+            line-height: 1.2;
+        }
+
+        body.fullscreen-mode .control-buttons {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        。fullscreen-exam-list {
+            margin-top: 15px;
+            padding: 20px;
+            background: rgba(255，255，255,0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0，0，0,0.1);
+            backdrop-filter: blur(10px);
+            overflow-y: visible;
+        }
+
+        。exam-list-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        。exam-list-title::before {
+            content: "📅";
+            font-size: 1.2em;
+        }
+
+        。exam-list-content {
+            overflow-y: visible;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 15px;
+        }
+
+        body。fullscreen-mode 。fullscreen-exam-list {
+            display: block !important;
+        }
+
+        body。dark-mode 。exam-list-title {
+            color: #3498db;
+        }
+
+        body.dark-mode .fullscreen-exam-list {
+            background: rgba(52, 73, 94, 0.95);
+            color: #ecf0f1;
+        }
+
+        body.dark-mode .time-label {
+            color: #00f5ff;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+        }
+
+        body.dark-mode .time-value {
+            background: linear-gradient(45deg, #00f5ff, #ff1493, #ffd700, #00ff00, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 300% 300%;
+            animation: rainbow-glow 3s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 20, 147, 0.8), 0 0 30px rgba(0, 245, 255, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
+            filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.7));
+        }
+
+        @keyframes rainbow-glow {
+            0% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.7)) brightness(1.2);
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: drop-shadow(0 0 25px rgba(255, 20, 147, 0.9)) brightness(1.5);
+            }
+            100% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.7)) brightness(1.2);
+            }
+        }
+
+        body.dark-mode .time-item {
+            background: rgba(52, 73, 94, 0.3);
+            border-color: rgba(116, 192, 252, 0.3);
+        }
+
+        body.dark-mode .time-display {
+            background: rgba(52, 73, 94, 0.95);
+        }
+
+        body.dark-mode .title {
+            background: linear-gradient(45deg, #00f5ff, #ff1493, #ffd700, #00ff00, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 300% 300%;
+            animation: rainbow-glow 3s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 20, 147, 0.8), 0 0 30px rgba(0, 245, 255, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
+            filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.7));
+        }
+
+        /* 缩放样式 */
+        .zoom-75 {
+            transform: scale(0.75);
+            transform-origin: top center;
+        }
+
+        .zoom-90 {
+            transform: scale(0.9);
+            transform-origin: top center;
+        }
+
+        .zoom-110 {
+            transform: scale(1.1);
+            transform-origin: top center;
+        }
+
+        .zoom-125 {
+            transform: scale(1.25);
+            transform-origin: top center;
+        }
+
+        .zoom-150 {
+            transform: scale(1.5);
+            transform-origin: top center;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .control-buttons {
+                position: static;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            /* 普通模式下的手机适配 */
+            .time-display {
+                padding: 15px;
+            }
+
+            .time-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .time-item {
+                min-height: 100px;
+                padding: 12px;
+            }
+
+            .time-label {
+                font-size: 1.3em;
+            }
+
+            .time-value {
+                font-size: 1.8em;
+                line-height: 1.1;
+                word-break: break-all;
+            }
+
+            /* 全屏模式下的手机适配 */
+            body.fullscreen-mode .time-display {
+                width: 95vw;
+                padding: 20px;
+            }
+
+            body.fullscreen-mode .time-label {
+                font-size: 1.2em;
+            }
+
+            body.fullscreen-mode .time-value {
+                font-size: 1.8em;
+                line-height: 1.1;
+            }
+
+            body.fullscreen-mode .time-item {
+                min-height: 120px;
+                padding: 15px;
+            }
+
+            body.fullscreen-mode .exam-list-content {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        /* 额外小屏幕适配 (小于480px) */
+        @media (max-width: 480px) {
+            .time-display {
+                padding: 10px;
+            }
+
+            .time-item {
+                min-height: 80px;
+                padding: 8px;
+            }
+
+            .time-label {
+                font-size: 1.1em;
+            }
+
+            .time-value {
+                font-size: 1.5em;
+                line-height: 1.0;
+            }
+
+            body.fullscreen-mode .time-value {
+                font-size: 1.5em;
+            }
+
+            body.fullscreen-mode .time-label {
+                font-size: 1.0em;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1 id="title">语音播报系统</h1>
-        </header>
+        <div class="header">
+            <h1 class="title" id="examTitle">考试语音播报系统</h1>
+            <div class="control-buttons">
+                <button class="control-btn" onclick="zoomOut()" title="缩小">
+                    <i class="fas fa-search-minus"></i>
+                </button>
 
-        <div class="time-section">
-            <div class="current-time" id="current-time">00:00:00</div>
-            <div class="date-info" id="date-info">2024年1月1日 星期一</div>
-            <div class="countdown" id="countdown">距离下一场考试开始: 00:00:00</div>
-        </div>
-
-        <div class="exam-section">
-            <div class="section-header">
-                <h2>考试安排</h2>
-                <button id="import-config" class="btn">导入配置</button>
-                <input type="file" id="config-file" accept=".json" style="display: none;">
-            </div>
-            <div class="exam-table-container">
-                <table class="exam-table">
-                    <thead>
-                        <tr>
-                            <th>日期</th>
-                            <th>科目</th>
-                            <th>开始时间</th>
-                            <th>结束时间</th>
-                            <th>状态</th>
-                        </tr>
-                    </thead>
-                    <tbody id="exam-list">
-                        <!-- 考试列表将通过JavaScript动态生成 -->
-                    </tbody>
-                </table>
+                <button class="control-btn" onclick="zoomIn()" title="放大">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+                <button class="control-btn" onclick="showHelp()" title="帮助">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+                <button class="control-btn" onclick="exportConfig()" title="导出配置">
+                    <i class="fas fa-download"></i>
+                </button>
+                <label class="control-btn" title="导入配置" style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-upload"></i>
+                    <input 输入="file" class="file-input" accept=".json" onchange="importConfig(event)" style="display: none;">
+                </label>
+                <button class="control-btn" onclick="toggleDarkMode()" title="夜间模式" id="darkModeBtn">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="control-btn" onclick="toggleFullscreen()" title="全屏模式" id="fullscreenBtn">
+                    <i class="fas fa-expand"></i>
+                </button>
             </div>
         </div>
 
-        <div class="reminder-section">
-            <div class="section-header">
-                <h2>提醒设置</h2>
-                <button id="add-reminder" class="btn">添加提醒</button>
-            </div>
-            <div class="reminder-form" id="reminder-form" style="display: none;">
-                <div class="form-group">
-                    <label for="reminder-type">提醒类别:</label>
-                    <select id="reminder-type">
-                        <option value="before-start">开考前</option>
-                        <option value="before-end">结束前</option>
-                        <option value="start">开始考试</option>
-                        <option value="end">结束考试</option>
-                    </select>
+        <div class="time-display">
+            <div class="time-grid">
+                <div class="time-item">
+                    <div class="time-label"></div>
+                    <div class="time-value" id="currentTime">--:--:--</div>
                 </div>
-                <div class="form-group" id="time-adjustment-group">
-                    <label for="time-adjustment">提前时间(分钟):</label>
-                    <input type="number" id="time-adjustment" min="1" max="60" value="10">
-                </div>
-                <div class="form-group">
-                    <label for="ringtone-name">铃声名称:</label>
-                    <input type="text" id="ringtone-name" value="默认铃声">
-                    <button id="select-ringtone" class="btn small">选择铃声</button>
-                    <input type="file" id="ringtone-file" accept="audio/*" style="display: none;">
-                    <button id="test-ringtone" class="btn small">试听</button>
-                </div>
-                <div class="form-actions">
-                    <button id="save-reminder" class="btn">保存</button>
-                    <button id="cancel-reminder" class="btn">取消</button>
+                <div class="time-item">
+                    <div class="time-label" id="countdownLabel"></div>
+                    <div class="time-value" id="countdown">--</div>
                 </div>
             </div>
-            <ul id="reminder-list" class="reminder-list">
-                <!-- 提醒列表将通过JavaScript动态生成 -->
-            </ul>
+            <div class="fullscreen-exam-list" id="fullscreenExamList" style="display: none;">
+                <div class="exam-list-content" id="fullscreenExamListContent"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    考试管理
+                    <button class="btn btn-success btn-small" onclick="addExam()" style="margin-left: auto;">
+                        <i class="fas fa-plus"></i> 添加考试
+                    </button>
+                </div>
+
+                <div id="examList"></div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-bell"></i>
+                    提醒设置
+                    <button class="btn btn-success btn-small" onclick="addReminder()" style="margin-left: auto;">
+                        <i class="fas fa-plus"></i> 添加提醒
+                    </button>
+                </div>
+
+                <div id="reminderList"></div>
+            </div>
         </div>
     </div>
 
-    <audio id="audio-player" style="display: none;"></audio>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <script src="script.js"></script>
+    <!-- 考试编辑模态框 -->
+    <div id="examModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeExamModal()">&times;</span>
+            <h2 id="examModalTitle">添加考试</h2>
+            <form id="examForm">
+                <div class="form-group">
+                    <label for="examSubject">科目:</label>
+                    <input type="text" id="examSubject" required>
+                </div>
+                <div class="form-group">
+                    <label for="examDate">日期:</label>
+                    <input type="date" id="examDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="examStartTime">开始时间:</label>
+                    <input type="time" id="examStartTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="examDuration">时长(分钟):</label>
+                    <input type="number" id="examDuration" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="examRecurrence">循环设置:</label>
+                    <select id="examRecurrence" onchange="updateRecurrenceSettings()" required>
+                        <option value="once">一次</option>
+                        <option value="daily">每天</option>
+                        <option value="weekly">每周</option>
+                        <option value="monthly">每月</option>
+                    </select>
+                </div>
+                <div class="form-group" id="recurrenceEndGroup" style="display: none;">
+                    <label for="recurrenceEndDate">循环结束日期:</label>
+                    <input type="date" id="recurrenceEndDate">
+                    <small style="color: #666; font-size: 0.8em; margin-top: 5px; display: block;">留空表示无限循环</small>
+                </div>
+                <div class="form-group">
+                    <label>结束时间:</label>
+                    <div id="examEndTime">--:--</div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> 保存
+                    </button>
+                    <button type="button" class="btn" onclick="closeExamModal()">
+                        <i class="fas fa-times"></i> 取消
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 提醒编辑模态框 -->
+    <div id="reminderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeReminderModal()">&times;</span>
+            <h2 id="reminderModalTitle">添加提醒</h2>
+            <form id="reminderForm">
+                <div class="form-group">
+                    <label for="reminderType">提醒类型:</label>
+                    <select id="reminderType" onchange="updateReminderForm()" required>
+                        <option value="开考前">开考前</option>
+                        <option value="结束前">结束前</option>
+                        <option value="开始考试">开始考试</option>
+                        <option value="考试结束">考试结束</option>
+                    </select>
+                </div>
+                <div class="form-group" id="minutesGroup">
+                    <label for="reminderMinutes">提前时间(分钟):</label>
+                    <input type="number" id="reminderMinutes" min="1" value="15">
+                </div>
+                <div class="form-group">
+                    <label for="reminderSound">铃声:</label>
+                    <select id="reminderSound" required>
+                        <option value="">选择铃声</option>
+                    </select>
+                    <div class="audio-controls">
+                        <button type="button" class="btn btn-small" onclick="playSound()">
+                            <i class="fas fa-play"></i> 试听
+                        </button>
+                        <label class="btn btn-small" style="color: white;">
+                            <i class="fas fa-upload"></i> 导入
+                            <input type="file" class="file-input" accept="audio/*" onchange="importAudio(event)">
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> 保存
+                    </button>
+                    <button type="button" class="btn" onclick="closeReminderModal()">
+                        <i class="fas fa-times"></i> 取消
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 帮助模态框 -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="close" onclick="closeHelpModal()">&times;</span>
+            <h2>📚 考试播报系统使用帮助</h2>
+            
+            <div style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
+                <h3>📅 考试管理</h3>
+                <ul>
+                    <li><strong>添加考试</strong>：点击“添加考试”按钮，填写科目、日期、时间、时长和循环设置</li>
+                    <li><strong>循环考试</strong>：支持一次、每天、每周、每月循环，可设置结束日期</li>
+                    <li><strong>编辑考试</strong>：点击编辑按钮修改考试信息，修改后所有循环实例都会更新</li>
+                    <li><strong>删除考试</strong>：点击删除按钮删除考试，循环考试会删除整个系列</li>
+                </ul>
+
+                <h3>🔔 提醒设置</h3>
+                <ul>
+                    <li><strong>开考前</strong>：在考试开始前指定时间提醒</li>
+                    <li><strong>结束前</strong>：在考试结束前指定时间提醒</li>
+                    <li><strong>开始考试</strong>：考试开始时立即提醒</li>
+                    <li><strong>考试结束</strong>：考试结束时立即提醒</li>
+                    <li><strong>自定义铃声</strong>：可导入音频文件作为提醒铃声</li>
+                </ul>
+
+                <h3>🔄 循环类型说明</h3>
+                <ul>
+                    <li><strong>一次</strong>：传统的一次性考试</li>
+                    <li><strong>每天</strong>：每天同一时间重复考试</li>
+                    <li><strong>每周</strong>：每周同一星期几重复考试</li>
+                    <li><strong>每月</strong>：每月同一日期重复考试</li>
+                    <li><strong>结束日期</strong>：可选设置，留空表示无限循环</li>
+                </ul>
+
+                <h3>⏱️ 时间显示</h3>
+                <ul>
+                    <li><strong>当前时间</strong>：实时显示系统时间和日期</li>
+                    <li><strong>考试倒计时</strong>：显示距离下一场考试的剩余时间</li>
+                    <li><strong>考试进度</strong>：考试进行中显示已进行和剩余时间</li>
+                </ul>
+
+                <h3>🎮 功能按钮</h3>
+                <ul>
+                    <li><strong>缩放</strong>：点击放大镜、缩小镜调整页面大小</li>
+                    <li><strong>导出/导入</strong>：保存和载入考试配置文件</li>
+                    <li><strong>夜间模式</strong>：切换深色主题，保护眼睛</li>
+                    <li><strong>全屏模式</strong>：隐藏管理界面，专注显示时间和考试信息</li>
+                </ul>
+
+                <h3>⌨️ 快捷键</h3>
+                <ul>
+                    <li><strong>Ctrl + 加号</strong>：放大页面</li>
+                    <li><strong>Ctrl + 减号</strong>：缩小页面</li>
+                    <li><strong>Ctrl + 0</strong>：重置缩放</li>
+                    <li><strong>F11</strong>：切换全屏模式</li>
+                    <li><strong>Ctrl + D</strong>：切换夜间模式</li>
+                </ul>
+
+                <h3>💾 数据保存</h3>
+                <ul>
+                    <li>所有考试和提醒设置自动保存在本地浏览器中</li>
+                    <li>可通过导出功能备份配置文件</li>
+                    <li>支持在不同设备间导入导出配置</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // 全局变量
+        let config = {
+            title: '考试语音播报系统',
+            exams: [],
+            reminders: []
+        };
+        let currentEditingExam = null;
+        let currentEditingReminder = null;
+        let availableSounds = [];
+        let customSounds = {};
+        let currentAudio = null;
+        let reminderCheckInterval = null;
+        let playedReminders = new Set();
+        let audioQueue = [];
+        let isPlayingAudio = false;
+        let pendingDelayedReminders = [];
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConfig();
+            loadSounds();
+            updateDisplay();
+            startTimeUpdate();
+            startReminderCheck();
+            loadSettings();
+        });
+
+        // 加载配置
+        async function loadConfig() {
+            try {
+                const response = await fetch('./exam_config.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    config = { ...config, ...data };
+                    
+                    // 从localStorage加载保存的数据
+                    const savedConfig = localStorage.getItem('examConfig');
+                    if (savedConfig) {
+                        const parsed = JSON.parse(savedConfig);
+                        config = { ...config, ...parsed };
+                    }
+                }
+            } catch (error) {
+                console.log('加载配置文件失败，使用默认配置');
+                loadFromLocalStorage();
+            }
+            
+            updateDisplay();
+        }
+
+        // 从localStorage加载
+        function loadFromLocalStorage() {
+            const savedConfig = localStorage。getItem('examConfig');
+            if (savedConfig) {
+                config = { ...config, ...JSON.parse(savedConfig) };
+            }
+        }
+
+        // 保存到localStorage
+        function saveToLocalStorage() {
+            localStorage。setItem('examConfig', JSON。stringify(config));
+        }
+
+        // 加载音频文件
+        async function loadSounds() {
+            const defaultSounds = [
+                'before15.mp3'， 'before20.mp3', 'before5.mp3'，
+                'end.mp3'， 'end15.mp3', 'start.mp3'
+            ];
+            
+            availableSounds = [];
+            
+            for (const sound of defaultSounds) {
+                try {
+                    const response = await fetch(`./sounds/${sound}`);
+                    if (response.ok) {
+                        availableSounds.push(sound);
+                    }
+                } catch (error) {
+                    console.log(`音频文件 ${sound} 不存在`);
+                }
+            }
+            
+            // 加载自定义音频
+            const savedSounds = localStorage.getItem('customSounds');
+            if (savedSounds) {
+                customSounds = JSON.parse(savedSounds);
+                availableSounds.push(...Object.keys(customSounds));
+            }
+            
+            updateSoundOptions();
+        }
+
+        // 更新音频选项
+        function updateSoundOptions() {
+            const select = document.getElementById('reminderSound');
+            select.innerHTML = '<option value="">选择铃声</option>';
+            
+            availableSounds.forEach(sound => {
+                const option = document.createElement('option');
+                option。value = sound;
+                option.textContent = sound;
+                select.appendChild(option);
+            });
+        }
+
+        // 更新显示
+        function updateDisplay() {
+            document.getElementById('examTitle').textContent = config.title;
+            updateExamList();
+            updateReminderList();
+        }
+
+        // 更新考试列表
+        function updateExamList() {
+            const examList = document.getElementById('examList');
+            examList.innerHTML = '';
+            
+            // 获取所有考试实例（包含循环生成的）
+            const allInstances = getAllExamInstances();
+            
+            allInstances.forEach((exam, displayIndex) => {
+                const examItem = document.createElement('div');
+                examItem.className = 'exam-item';
+                examItem.draggable = true;
+                examItem.dataset.index = exam.originalIndex; // 使用原始索引用于编辑和删除
+                
+                const status = getExamStatus(exam);
+                const endTime = calculateEndTime(exam.startTime, exam.duration);
+                
+                examItem.innerHTML = `
+                    <div class="item-header">
+                        <div class="item-title">${exam.subject}</div>
+                        <div class="controls">
+                            <span class="status-badge status-${status.class}">${status.text}</span>
+                            <button class="btn btn-small" onclick="editExam(${exam.originalIndex})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-small btn-danger" onclick="deleteExam(${exam.originalIndex})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="item-details">
+                        日期: ${exam.date} | 时间: ${exam.startTime} - ${endTime} | 时长: ${exam.duration}分钟 | 循环: ${getRecurrenceText(exam.recurrence, exam.recurrenceEndDate)}
+                    </div>
+                `;
+                
+                // 拖拽事件（只允许拖拽原始考试，不允许拖拽生成的实例）
+                if (exam.instanceIndex === undefined || exam.instanceIndex === 0) {
+                    examItem.addEventListener('dragstart', handleDragStart);
+                    examItem.addEventListener('dragover', handleDragOver);
+                    examItem.addEventListener('drop', handleDrop);
+                    examItem.addEventListener('dragend', handleDragEnd);
+                } else {
+                    examItem.draggable = false;
+                    examItem.style.opacity = '0.8';
+                }
+                
+                examList.appendChild(examItem);
+            });
+        }
+
+        // 更新提醒列表
+        function updateReminderList() {
+            const reminderList = document.getElementById('reminderList');
+            reminderList.innerHTML = '';
+            
+            config.reminders.forEach((reminder, index) => {
+                const reminderItem = document.createElement('div');
+                reminderItem.className = 'reminder-item';
+                reminderItem.draggable = true;
+                reminderItem.dataset.index = index;
+                
+                const minutesText = reminder.minutes ? `${reminder.minutes}分钟` : '';
+                const statusText = reminder.enabled ? '启用' : '暂停';
+                const statusClass = reminder.enabled ? 'status-ongoing' : 'status-finished';
+                
+                reminderItem.innerHTML = `
+                    <div class="item-header">
+                        <div class="item-title">${reminder.type} ${minutesText}</div>
+                        <div class="controls">
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                            <button class="btn btn-small" onclick="toggleReminder(${index})">
+                                <i class="fas fa-${reminder.enabled ? 'pause' : 'play'}"></i>
+                            </button>
+                            <button class="btn btn-small" onclick="editReminder(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-small btn-danger" onclick="deleteReminder(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="item-details">
+                        铃声: ${reminder.sound}
+                    </div>
+                `;
+                
+                // 拖拽事件
+                reminderItem.addEventListener('dragstart', handleReminderDragStart);
+                reminderItem.addEventListener('dragover', handleDragOver);
+                reminderItem.addEventListener('drop', handleReminderDrop);
+                reminderItem.addEventListener('dragend', handleDragEnd);
+                
+                reminderList.appendChild(reminderItem);
+            });
+        }
+
+        // 更新循环设置
+        function updateRecurrenceSettings() {
+            const recurrenceType = document.getElementById('examRecurrence').value;
+            const endGroup = document.getElementById('recurrenceEndGroup');
+            
+            if (recurrenceType === 'once') {
+                endGroup.style.display = 'none';
+            } else {
+                endGroup.style.display = 'block';
+            }
+        }
+
+        // 获取循环文本描述
+        function getRecurrenceText(recurrence, endDate) {
+            switch (recurrence) {
+                case 'once':
+                    return '一次';
+                case 'daily':
+                    if (endDate) {
+                        return `每天(至${endDate})`;
+                    } else {
+                        return '每天';
+                    }
+                case 'weekly':
+                    if (endDate) {
+                        return `每周(至${endDate})`;
+                    } else {
+                        return '每周';
+                    }
+                case 'monthly':
+                    if (endDate) {
+                        return `每月(至${endDate})`;
+                    } else {
+                        return '每月';
+                    }
+                default:
+                    return '一次';
+            }
+        }
+
+        // 根据循环设置生成考试实例
+        function generateExamInstances(exam) {
+            const instances = [];
+            const startDate = new Date(exam.date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (exam.recurrence === 'once') {
+                instances.push({
+                    ...exam,
+                    originalIndex: exam.originalIndex || 0
+                });
+            } else {
+                const endDate = exam.recurrenceEndDate ? new Date(exam.recurrenceEndDate) : null;
+                let currentDate = new Date(startDate);
+                let instanceIndex = 0;
+                
+                // 找到第一个大于等于今天的日期
+                while (currentDate < today && (!endDate || currentDate <= endDate)) {
+                    if (exam.recurrence === 'daily') {
+                        currentDate.setDate(currentDate.getDate() + 1);
+                    } else if (exam.recurrence === 'weekly') {
+                        currentDate.setDate(currentDate.getDate() + 7);
+                    } else if (exam.recurrence === 'monthly') {
+                        currentDate.setMonth(currentDate.getMonth() + 1);
+                    }
+                    instanceIndex++;
+                    
+                    // 防止无限循环
+                    if (instanceIndex > 1000) break;
+                }
+                
+                // 只添加找到的最近一次考试
+                if (currentDate >= today && (!endDate || currentDate <= endDate)) {
+                    instances.push({
+                        ...exam,
+                        date: currentDate.toISOString().split('T')[0],
+                        originalIndex: exam.originalIndex || 0,
+                        instanceIndex: instanceIndex
+                    });
+                }
+            }
+            
+            return instances;
+        }
+
+        // 获取所有考试实例（包含循环生成的）
+        function getAllExamInstances() {
+            let allInstances = [];
+            
+            config.exams.forEach((exam, index) => {
+                const examWithIndex = { ...exam, originalIndex: index };
+                const instances = generateExamInstances(examWithIndex);
+                allInstances = allInstances.concat(instances);
+            });
+            
+            // 按日期和时间排序
+            allInstances.sort((a, b) => {
+                const dateTimeA = new Date(`${a.date} ${a.startTime}`);
+                const dateTimeB = new Date(`${b.date} ${b.startTime}`);
+                return dateTimeA - dateTimeB;
+            });
+            
+            return allInstances;
+        }
+        function getExamStatus(exam) {
+            const now = new Date();
+            const examStart = new Date(`${exam.date} ${exam.startTime}`);
+            const examEnd = new Date(examStart.getTime() + exam.duration * 60000);
+            
+            if (now < examStart) {
+                return { text: '未开始', class: 'upcoming' };
+            } else if (now >= examStart && now <= examEnd) {
+                return { text: '进行中', class: 'ongoing' };
+            } else {
+                return { text: '已结束', class: 'finished' };
+            }
+        }
+
+        // 计算结束时间
+        function calculateEndTime(startTime, duration) {
+            const [hours, minutes] = startTime.split(':').map(Number);
+            const startMinutes = hours * 60 + minutes;
+            const endMinutes = startMinutes + duration;
+            const endHours = Math.floor(endMinutes / 60) % 24;
+            const endMins = endMinutes % 60;
+            return `${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`;
+        }
+
+        // 开始时间更新
+        function startTimeUpdate() {
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        // 更新时间显示
+        function updateTime() {
+            const now = new Date();
+            
+            // 当前时间 - 分离时间和日期
+            const timeOnly = now.toLocaleTimeString('zh-CN', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            const dateOnly = now.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                weekday: 'long'
+            });
+            document.getElementById('currentTime').innerHTML = `<div style="font-size: 2.2em; font-weight: bold; background: linear-gradient(45deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 5px;">${timeOnly}</div><div style="font-size: 0.8em; color: #666;">${dateOnly}</div>`;
+            
+            // 考试倒计时或进度
+            updateCountdown(now);
+            
+            // 每分钟更新一次考试列表状态（在秒数为0时）
+            if (now.getSeconds() === 0) {
+                updateExamList();
+            }
+            
+            // 如果在全屏模式下，更新考试信息
+            if (document.body.classList.contains('fullscreen-mode')) {
+                updateFullscreenExamInfo();
+            }
+        }
+
+        // 更新倒计时
+        function updateCountdown(now) {
+            const nextExam = getNextExam(now);
+            const currentExam = getCurrentExam(now);
+            
+            if (currentExam) {
+                // 显示考试进度
+                document.getElementById('countdownLabel').textContent = '';
+                const examStart = new Date(`${currentExam.date} ${currentExam.startTime}`);
+                const examEnd = new Date(examStart.getTime() + currentExam.duration * 60000);
+                
+                const elapsedSeconds = Math.floor((now - examStart) / 1000);
+                const remainingSeconds = Math.floor((examEnd - now) / 1000);
+                
+                // 格式化时间显示（--分--秒）
+                const formatTime = (totalSeconds) => {
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
+                    
+                    if (hours > 0) {
+                        const totalMinutes = hours * 60 + minutes;
+                        return `${totalMinutes}分${seconds.toString().padStart(2, '0')}秒`;
+                    } else {
+                        return `${minutes}分${seconds.toString().padStart(2, '0')}秒`;
+                    }
+                };
+                
+                // 计算进度百分比
+                const totalSeconds = currentExam.duration * 60;
+                const progressPercent = Math.min((elapsedSeconds / totalSeconds) * 100, 100);
+                
+                // 根据进度百分比计算颜色（返回纯色用于linear-gradient）
+                const getProgressColor = (percent) => {
+                    if (percent <= 30) {
+                        // 0-30%: 绿色
+                        return '#37b24d';
+                    } else if (percent <= 60) {
+                        // 30-60%: 蓝色
+                        return '#339af0';
+                    } else if (percent <= 80) {
+                        // 60-80%: 橙色
+                        return '#f76707';
+                    } else {
+                        // 80-100%: 红色
+                        return '#e03131';
+                    }
+                };
+                
+                // 根据进度百分比计算渐变背景
+                const getProgressGradient = (percent) => {
+                    if (percent <= 30) {
+                        return `linear-gradient(45deg, #2d8f47, #37b24d)`;
+                    } else if (percent <= 60) {
+                        return `linear-gradient(45deg, #1971c2, #339af0)`;
+                    } else if (percent <= 80) {
+                        return `linear-gradient(45deg, #d9480f, #f76707)`;
+                    } else {
+                        return `linear-gradient(45deg, #c92a2a, #e03131)`;
+                    }
+                };
+                
+                // 根据进度百分比计算文字颜色（纯色）
+                const getTextColor = (percent) => {
+                    if (percent <= 30) {
+                        return '#2d8f47'; // 深绿色
+                    } else if (percent <= 60) {
+                        return '#1971c2'; // 深蓝色
+                    } else if (percent <= 80) {
+                        return '#d9480f'; // 深橙色
+                    } else {
+                        return '#c92a2a'; // 深红色
+                    }
+                };
+                
+                // 调试信息
+                console。log('Progress:'， progressPercent, 'Color:', getProgressColor(progressPercent));
+                
+                document.getElementById('countdown')。innerHTML = 
+                    `${currentExam.subject}<br>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 5px; font-size: 0.6em;">
+                        <span style="color: ${getTextColor(progressPercent)}; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-weight: bold;">已进行: ${formatTime(elapsedSeconds)}</span>
+                        <span style="color: ${getTextColor(progressPercent)}; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-weight: bold;">剩余: ${formatTime(remainingSeconds)}</span>
+                    </div>
+                    <div class="progress-single" style="height: 20px; width: 100%; background: ${getProgressGradient(progressPercent)}; background-size: ${progressPercent}% 100%; background-repeat: no-repeat; background-color: rgba(255,255,255,0.2); border-radius: 10px; border: 1px solid rgba(255,255,255,0.3);"></div>`;
+            } else if (nextExam) {
+                // 显示倒计时
+                document.getElementById('countdownLabel')。textContent = '';
+                const examStart = new Date(`${nextExam.date} ${nextExam.startTime}`);
+                const timeDiff = examStart - now;
+                
+                const days = Math.floor(timeDiff / (24 * 60 * 60 * 1000));
+                const hours = Math。floor((timeDiff % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+                const minutes = Math。floor((timeDiff % (60 * 60 * 1000)) / (60 * 1000));
+                const seconds = Math.floor((timeDiff % (60 * 1000)) / 1000);
+                
+                let timeDisplay;
+                if (days > 0) {
+                    timeDisplay = `${days}天${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                } else {
+                    timeDisplay = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                document.getElementById('countdown').innerHTML = 
+                    `距离${nextExam.subject}科开始考试还有<br>${timeDisplay}`;
+            } else {
+                document.getElementById('countdownLabel').textContent = '';
+                document.getElementById('countdown').textContent = '暂无考试安排';
+            }
+        }
+
+        // 获取下一场考试
+        function getNextExam(now) {
+            const allInstances = getAllExamInstances();
+            return allInstances
+                .filter(exam => new Date(`${exam.date} ${exam.startTime}`) > now)[0]; // 已按日期排序
+        }
+
+        // 获取当前考试
+        function getCurrentExam(now) {
+            const allInstances = getAllExamInstances();
+            return allInstances.find(exam => {
+                const examStart = new Date(`${exam.date} ${exam.startTime}`);
+                const examEnd = new Date(examStart.getTime() + exam.duration * 60000);
+                return now >= examStart && now <= examEnd;
+            });
+        }
+
+        // 开始提醒检查
+        function startReminderCheck() {
+            reminderCheckInterval = setInterval(checkReminders, 1000);
+        }
+
+        // 为循环考试生成未来的提醒实例
+        function generateUpcomingReminders(exam) {
+            if (exam.recurrence === 'once') {
+                return [exam];
+            }
+            
+            const reminders = [];
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            // 从当前显示的考试实例开始，生成未来3次考试的提醒
+            let currentDate = new Date(exam.date);
+            let instanceIndex = exam.instanceIndex || 0;
+            const endDate = exam.recurrenceEndDate ? new Date(exam.recurrenceEndDate) : null;
+            
+            for (let i = 0; i < 3; i++) {
+                if (endDate && currentDate > endDate) break;
+                
+                reminders.push({
+                    ...exam,
+                    date: currentDate.toISOString().split('T')[0],
+                    instanceIndex: instanceIndex
+                });
+                
+                // 计算下一次考试日期
+                if (exam.recurrence === 'daily') {
+                    currentDate.setDate(currentDate.getDate() + 1);
+                } else if (exam.recurrence === 'weekly') {
+                    currentDate.setDate(currentDate.getDate() + 7);
+                } else if (exam.recurrence === 'monthly') {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                }
+                instanceIndex++;
+            }
+            
+            return reminders;
+        }
+        // 获取上一科考试
+        function getPreviousExam(currentExam, allExamInstances) {
+            // 按时间排序所有考试实例
+            const sortedExams = allExamInstances.slice().sort((a, b) => {
+                const dateTimeA = new Date(`${a.date} ${a.startTime}`);
+                const dateTimeB = new Date(`${b.date} ${b.startTime}`);
+                return dateTimeA - dateTimeB;
+            });
+            
+            const currentExamDateTime = new Date(`${currentExam.date} ${currentExam.startTime}`);
+            
+            // 找到当前考试的位置，返回前一个考试
+            for (let i = 0; i < sortedExams.length; i++) {
+                const examDateTime = new Date(`${sortedExams[i].date} ${sortedExams[i].startTime}`);
+                if (examDateTime.getTime() === currentExamDateTime.getTime() && 
+                    sortedExams[i].subject === currentExam.subject) {
+                    // 找到当前考试，返回前一个考试（如果存在）
+                    return i > 0 ? sortedExams[i - 1] : null;
+                }
+            }
+            
+            return null;
+        }
+
+        // 检查提醒
+        function checkReminders() {
+            const now = new Date();
+            
+            // 清理过期的已播放提醒记录
+            cleanupPlayedReminders(now);
+            
+            // 处理延迟播放的提醒
+            processDelayedReminders(now);
+            
+            // 获取所有考试实例（但为循环考试生成未来的提醒）
+            const allExamInstances = getAllExamInstances();
+            
+            allExamInstances.forEach(exam => {
+                // 为循环考试生成未来的提醒实例
+                const reminderInstances = generateUpcomingReminders(exam);
+                
+                reminderInstances.forEach(reminderExam => {
+                    config.reminders.forEach(reminder => {
+                        if (!reminder.enabled) return;
+                        
+                        const examStart = new Date(`${reminderExam.date} ${reminderExam.startTime}`);
+                        const examEnd = new Date(examStart.getTime() + reminderExam.duration * 60000);
+                        
+                        // 为循环考试创建唯一的提醒键值
+                        let reminderKey = `${reminderExam.subject}-${reminderExam.date}-${reminder.type}-${reminder.minutes || 0}`;
+                        if (reminderExam.instanceIndex !== undefined) {
+                            reminderKey += `-${reminderExam.instanceIndex}`;
+                        }
+                        
+                        if (playedReminders.has(reminderKey)) return;
+                        
+                        let shouldPlay = false;
+                        let isEndReminder = false;
+                        
+                        switch (reminder.输入) {
+                            case '开考前':
+                                const beforeTime = new Date(examStart.getTime() - (reminder.minutes || 0) * 60000);
+                                const timeDiff = now - beforeTime;
+                                shouldPlay = timeDiff >= 0 && timeDiff <= 5000 && now < examStart;
+                                
+                                // 检查是否应该禁止播报：在上一科考试结束前禁止播报下一科的任何开考前提醒
+                                if (shouldPlay) {
+                                    const previousExam = getPreviousExam(reminderExam, allExamInstances);
+                                    if (previousExam) {
+                                        const prevExamEnd = new Date(`${previousExam.date} ${previousExam.startTime}`);
+                                        prevExamEnd.setMinutes(prevExamEnd.getMinutes() + previousExam.duration);
+                                        
+                                        // 如果上一科考试还未结束，则禁止播报下一科的任何开考前提醒
+                                        if (now < prevExamEnd) {
+                                            shouldPlay = false;
+                                            console.log(`阻止开考前提醒：上一科${previousExam.subject}还未结束`);
+                                        }
+                                    }
+                                }
+                                break;
+                            case '结束前':
+                                const beforeEndTime = new Date(examEnd。getTime() - (reminder.minutes || 0) * 60000);
+                                const endTimeDiff = now - beforeEndTime;
+                                shouldPlay = endTimeDiff >= 0 && endTimeDiff <= 5000 && 当前 < examEnd;
+                                break;
+                            case '开始考试':
+                                shouldPlay = 当前 >= examStart && (当前 - examStart) <= 2000;
+                                break;
+                            case '考试结束':
+                                shouldPlay = 当前 >= examEnd && (now - examEnd) <= 2000;
+                                isEndReminder = true;
+                                break;
+                        }
+                        
+                        if (shouldPlay) {
+                            // 检查语音冲突
+                            const conflictingReminder = checkAudioConflict(reminder， reminderExam, now, allExamInstances);
+                            
+                            if (conflictingReminder) {
+                                // 处理冲突：如果当前是考试结束提醒与开考前提醒冲突
+                                if (isEndReminder && conflictingReminder.type === '开考前') {
+                                    // 先播放考试结束提醒
+                                    addToAudioQueue(reminder, reminderExam, reminderKey);
+                                    
+                                    // 30秒后播放开考前提醒
+                                    const delayedTime = new Date(now。getTime() + 30000);
+                                    pendingDelayedReminders.push({
+                                        reminder: conflictingReminder.reminder，
+                                        exam: conflictingReminder.exam,
+                                        key: conflictingReminder.key,
+                                        scheduledTime: delayedTime
+                                    });
+                                    
+                                    console.log(`冲突处理：先播放${reminder.输入}，30秒后播放${conflictingReminder.输入}`);
+                                } else {
+                                    // 其他冲突情况，直接加入队列
+                                    addToAudioQueue(reminder, reminderExam， reminderKey);
+                                }
+                            } else {
+                                addToAudioQueue(reminder， reminderExam, reminderKey);
+                            }
+                            
+                            playedReminders。add(reminderKey);
+                        }
+                    });
+                });
+            });
+            
+            // 处理音频队列
+            processAudioQueue();
+        }
+
+        // 清理过期的已播放提醒记录
+        function cleanupPlayedReminders(当前) {
+            const keysToRemove = [];
+            
+            playedReminders。forEach(key => {
+                // 解析提醒键值：科目-日期-类型-分钟数
+                const parts = key。split('-');
+                if (parts.length >= 3) {
+                    const examDate = parts[1];
+                    const examTime = config.exams.find(exam => 
+                        exam。subject === parts[0] && exam.date === examDate
+                    );
+                    
+                    if (examTime) {
+                        const examStart = new Date(`${examTime.date} ${examTime.startTime}`);
+                        const examEnd = new Date(examStart。getTime() + examTime.duration * 60000);
+                        
+                        // 如果考试已结束超过1小时，清理相关提醒记录
+                        if (now - examEnd > 60 * 60 * 1000) {
+                            keysToRemove.push(key);
+                        }
+                    }
+                }
+            });
+            
+            keysToRemove。forEach(key => playedReminders。delete(key));
+        }
+
+        // 检查音频冲突
+        function checkAudioConflict(currentReminder, currentExam, now, allExamInstances) {
+            const currentTime = 当前.getTime();
+            const conflictBufferTime = 10000; // 10秒缓冲时间
+            
+            // 检查是否正在播放音频
+            if (isPlayingAudio) {
+                return { 
+                    输入: 'playing',
+                    reminder: currentReminder,
+                    exam: currentExam,
+                    key: `${currentExam.subject}-${currentExam.date}-${currentReminder.type}-${currentReminder.minutes || 0}`
+                };
+            }
+            
+            // 检查同时间段内的其他提醒（特别是考试结束与开考前提醒）
+            for (const exam of allExamInstances) {
+                const reminderInstances = generateUpcomingReminders(exam);
+                
+                for (const reminderExam of reminderInstances) {
+                    if (reminderExam.subject === currentExam.subject && 
+                        reminderExam.date === currentExam.date &&
+                        reminderExam.startTime === currentExam.startTime) {
+                        continue; // 跳过同一考试
+                    }
+                    
+                    for (const reminder of config.reminders) {
+                        if (!reminder.enabled || reminder === currentReminder) continue;
+                        
+                        const examStart = new Date(`${reminderExam.date} ${reminderExam.startTime}`);
+                        const examEnd = new Date(examStart.getTime() + reminderExam.duration * 60000);
+                        
+                        let reminderTime;
+                        
+                        switch (reminder.type) {
+                            case '开考前':
+                                reminderTime = new Date(examStart.getTime() - (reminder.minutes || 0) * 60000);
+                                break;
+                            case '结束前':
+                                reminderTime = new Date(examEnd.getTime() - (reminder.minutes || 0) * 60000);
+                                break;
+                            case '开始考试':
+                                reminderTime = examStart;
+                                break;
+                            case '考试结束':
+                                reminderTime = examEnd;
+                                break;
+                            default:
+                                continue;
+                        }
+                        
+                        // 检查时间是否在冲突缓冲范围内
+                        const timeDiff = Math.abs(currentTime - reminderTime.getTime());
+                        
+                        if (timeDiff <= conflictBufferTime) {
+                            return {
+                                type: reminder.type,
+                                reminder: reminder,
+                                exam: reminderExam,
+                                key: `${reminderExam.subject}-${reminderExam.date}-${reminder.type}-${reminder.minutes || 0}`,
+                                timeDiff: timeDiff
+                            };
+                        }
+                    }
+                }
+            }
+            
+            return null;
+        }
+        
+        // 添加到音频队列
+        function addToAudioQueue(reminder, exam, key) {
+            audioQueue.push({
+                reminder: reminder,
+                exam: exam,
+                key: key,
+                timestamp: Date.now()
+            });
+            
+            console.log(`添加到音频队列: ${exam.subject} - ${reminder.type}`);
+        }
+        
+        // 处理音频队列
+        function processAudioQueue() {
+            if (isPlayingAudio || audioQueue.length === 0) {
+                return;
+            }
+            
+            const queueItem = audioQueue.shift();
+            isPlayingAudio = true;
+            
+            console.log(`开始播放: ${queueItem.exam.subject} - ${queueItem.reminder.type}`);
+            
+            const audio = new Audio();
+            
+            if (customSounds[queueItem.reminder.sound]) {
+                audio.src = customSounds[queueItem.reminder.sound];
+            } else {
+                audio.src = `./sounds/${queueItem.reminder.sound}`;
+            }
+            
+            audio.onended = () => {
+                isPlayingAudio = false;
+                console.log(`播放结束: ${queueItem.exam.subject} - ${queueItem.reminder.type}`);
+                
+                // 继续处理队列中的下一个音频
+                setTimeout(() => {
+                    processAudioQueue();
+                }, 500); // 0.5秒间隔
+            };
+            
+            audio.onerror = () => {
+                isPlayingAudio = false;
+                console.error(`播放失败: ${queueItem.reminder.sound}`);
+                showNotification(`播放提醒失败: ${queueItem.reminder.sound}`, 'error');
+                
+                // 继续处理队列中的下一个音频
+                setTimeout(() => {
+                    processAudioQueue();
+                }, 500);
+            };
+            
+            audio.play().catch(error => {
+                isPlayingAudio = false;
+                console.error('播放音频失败:', error);
+                showNotification(`播放提醒失败: ${queueItem.reminder.sound}`, 'error');
+                
+                // 继续处理队列中的下一个音频
+                setTimeout(() => {
+                    processAudioQueue();
+                }, 500);
+            });
+            
+            const message = `${queueItem.exam.subject} - ${queueItem.reminder.type}${queueItem.reminder.minutes ? `(${queueItem.reminder.minutes}分钟)` : ''}`;
+            showNotification(message);
+        }
+        
+        // 处理延迟播放的提醒
+        function processDelayedReminders(now) {
+            const readyReminders = [];
+            const remainingReminders = [];
+            
+            pendingDelayedReminders.forEach(delayedItem => {
+                if (now >= delayedItem.scheduledTime) {
+                    // 检查是否已经播放过
+                    if (!playedReminders.has(delayedItem.key)) {
+                        readyReminders.push(delayedItem);
+                        playedReminders.add(delayedItem.key);
+                    }
+                } else {
+                    remainingReminders.push(delayedItem);
+                }
+            });
+            
+            // 更新待处理列表
+            pendingDelayedReminders = remainingReminders;
+            
+            // 将准备好的提醒加入音频队列
+            readyReminders.forEach(item => {
+                addToAudioQueue(item.reminder, item.exam, item.key);
+                console.log(`延迟提醒准备播放: ${item.exam.subject} - ${item.reminder.type}`);
+            });
+        }
+
+        // 添加考试
+        function addExam() {
+            currentEditingExam = null;
+            document。getElementById('examModalTitle')。textContent = '添加考试';
+            document。getElementById('examForm')。reset();
+            
+            // 重置循环设置为默认值
+            document.getElementById('examRecurrence').value = 'once';
+            document。getElementById('recurrenceEndDate').value = '';
+            updateRecurrenceSettings();
+            
+            document。getElementById('examModal')。style.display = 'block';
+        }
+
+        // 编辑考试
+        function editExam(index) {
+            currentEditingExam = index;
+            const exam = config.exams[index];
+            document.getElementById('examModalTitle').textContent = '编辑考试';
+            document.getElementById('examSubject').value = exam.subject;
+            document。getElementById('examDate').value = exam.date;
+            document。getElementById('examStartTime')。value = exam.startTime;
+            document。getElementById('examDuration')。value = exam.duration;
+            
+            // 设置循环选项
+            document。getElementById('examRecurrence')。value = exam.recurrence || 'once';
+            document.getElementById('recurrenceEndDate').value = exam.recurrenceEndDate || '';
+            
+            updateRecurrenceSettings();
+            updateEndTime();
+            document。getElementById('examModal')。style.display = 'block';
+        }
+
+        // 删除考试
+        function deleteExam(index) {
+            if (confirm('确定要删除这个考试吗？')) {
+                config。exams。splice(index, 1);
+                saveToLocalStorage();
+                updateExamList();
+                showNotification('考试已删除');
+            }
+        }
+
+        // 关闭考试模态框
+        function closeExamModal() {
+            document。getElementById('examModal')。style。display = 'none';
+        }
+
+        // 更新结束时间
+        function updateEndTime() {
+            const startTime = document.getElementById('examStartTime')。value;
+            const duration = parseInt(document。getElementById('examDuration')。value) || 0;
+            
+            if (startTime && duration) {
+                const endTime = calculateEndTime(startTime， duration);
+                document。getElementById('examEndTime')。textContent = endTime;
+            } else {
+                document。getElementById('examEndTime')。textContent = '--:--';
+            }
+        }
+
+        // 考试表单事件
+        document.getElementById('examForm')。addEventListener('submit', function(e) {
+            e。preventDefault();
+            
+            const exam = {
+                subject: document。getElementById('examSubject').value,
+                date: document。getElementById('examDate').value,
+                startTime: document.getElementById('examStartTime')。value,
+                duration: parseInt(document。getElementById('examDuration').value),
+                recurrence: document。getElementById('examRecurrence')。value,
+                recurrenceEndDate: document.getElementById('recurrenceEndDate')。value || null
+            };
+            
+            if (currentEditingExam !== null) {
+                // 清理与该考试相关的已播放提醒记录
+                const oldExam = config。exams[currentEditingExam];
+                
+                // 删除所有与旧考试相关的已播放提醒记录
+                const keysToRemove = [];
+                playedReminders。forEach(key => {
+                    // 检查键值是否包含旧考试的科目和日期
+                    if (key。startsWith(`${oldExam.subject}-${oldExam。date}-`)) {
+                        keysToRemove。push(key);
+                    }
+                });
+                
+                // 删除匹配的键值
+                keysToRemove。forEach(key => playedReminders.delete(key));
+                
+                config。exams[currentEditingExam] = exam;
+                showNotification('考试已更新');
+                
+                // 立即检查是否有需要播放的提醒
+                setTimeout(() => {
+                    checkReminders();
+                }， 100);
+            } else {
+                config.exams。push(exam);
+                showNotification('考试已添加');
+            }
+            
+            saveToLocalStorage();
+            updateExamList();
+            closeExamModal();
+        });
+
+        // 监听时间和时长变化
+        document.getElementById('examStartTime').addEventListener('input', updateEndTime);
+        document.getElementById('examDuration').addEventListener('input', updateEndTime);
+
+        // 添加提醒
+        function addReminder() {
+            currentEditingReminder = null;
+            document.getElementById('reminderModalTitle').textContent = '添加提醒';
+            document.getElementById('reminderForm')。reset();
+            document.getElementById('reminderType')。value = '开考前';
+            updateReminderForm();
+            document.getElementById('reminderModal').style.display = 'block';
+        }
+
+        // 编辑提醒
+        function editReminder(index) {
+            currentEditingReminder = index;
+            const reminder = config.reminders[index];
+            document。getElementById('reminderModalTitle')。textContent = '编辑提醒';
+            document。getElementById('reminderType')。value = reminder。type;
+            document。getElementById('reminderMinutes')。value = reminder.minutes || 15;
+            document.getElementById('reminderSound').value = reminder.sound;
+            updateReminderForm();
+            document.getElementById('reminderModal').style.display = 'block';
+        }
+
+        // 删除提醒
+        function deleteReminder(index) {
+            if (confirm('确定要删除这个提醒吗？')) {
+                config.reminders.splice(index, 1);
+                saveToLocalStorage();
+                updateReminderList();
+                showNotification('提醒已删除');
+            }
+        }
+
+        // 切换提醒状态
+        function toggleReminder(index) {
+            config.reminders[index].enabled = !config.reminders[index].enabled;
+            saveToLocalStorage();
+            updateReminderList();
+            const status = config.reminders[index].enabled ? '启用' : '暂停';
+            showNotification(`提醒已${status}`);
+        }
+
+        // 关闭提醒模态框
+        function closeReminderModal() {
+            document.getElementById('reminderModal').style.display = 'none';
+        }
+
+        // 显示帮助
+        function showHelp() {
+            document.getElementById('helpModal').style.display = 'block';
+        }
+        
+
+
+
+        // 关闭帮助模态框
+        function closeHelpModal() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+
+        // 更新提醒表单
+        function updateReminderForm() {
+            const type = document.getElementById('reminderType').value;
+            const minutesGroup = document.getElementById('minutesGroup');
+            
+            if (type === '开考前' || type === '结束前') {
+                minutesGroup.style.display = 'block';
+            } else {
+                minutesGroup.style.display = 'none';
+            }
+        }
+
+        // 提醒表单事件
+        document.getElementById('reminderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const type = document.getElementById('reminderType').value;
+            const reminder = {
+                type: type,
+                sound: document.getElementById('reminderSound').value,
+                enabled: true
+            };
+            
+            if (type === '开考前' || type === '结束前') {
+                reminder.minutes = parseInt(document.getElementById('reminderMinutes').value);
+            }
+            
+            if (currentEditingReminder !== null) {
+                config.reminders[currentEditingReminder] = reminder;
+                showNotification('提醒已更新');
+            } else {
+                config.reminders.push(reminder);
+                showNotification('提醒已添加');
+            }
+            
+            saveToLocalStorage();
+            updateReminderList();
+            closeReminderModal();
+        });
+
+        // 播放音频
+        function playSound() {
+            const soundFile = document.getElementById('reminderSound').value;
+            if (!soundFile) {
+                showNotification('请先选择铃声', 'error');
+                return;
+            }
+            
+            // 如果正在播放其他音频，先停止
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+            
+            currentAudio = new Audio();
+            
+            if (customSounds[soundFile]) {
+                currentAudio.src = customSounds[soundFile];
+            } else {
+                currentAudio.src = `./sounds/${soundFile}`;
+            }
+            
+            currentAudio.play().catch(error => {
+                console.error('播放音频失败:', error);
+                showNotification('播放音频失败', 'error');
+            });
+        }
+
+        // 导入音频
+        function importAudio(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('audio/')) {
+                showNotification('请选择音频文件', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const fileName = file.name;
+                customSounds[fileName] = e.target.result;
+                localStorage.setItem('customSounds', JSON.stringify(customSounds));
+                
+                if (!availableSounds.includes(fileName)) {
+                    availableSounds.push(fileName);
+                    updateSoundOptions();
+                }
+                
+                document.getElementById('reminderSound').value = fileName;
+                showNotification(`音频 ${fileName} 导入成功`);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 导出配置
+        function exportConfig() {
+            const dataStr = JSON.stringify(config, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'exam_config.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            showNotification('配置已导出');
+        }
+
+        // 导入配置
+        function importConfig(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedConfig = JSON.parse(e.target.result);
+                    config = { ...config, ...importedConfig };
+                    saveToLocalStorage();
+                    updateDisplay();
+                    showNotification('配置导入成功');
+                } catch (error) {
+                    showNotification('配置文件格式错误', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // 拖拽功能 - 考试
+        let draggedExamIndex = null;
+        
+        function handleDragStart(e) {
+            draggedExamIndex = parseInt(e.target.dataset.index);
+            e.target.classList.add('dragging');
+        }
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.target.closest('.exam-item')?.classList.add('drag-over');
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            const targetIndex = parseInt(e.target.closest('.exam-item').dataset.index);
+            
+            if (draggedExamIndex !== null && draggedExamIndex !== targetIndex) {
+                const draggedExam = config.exams[draggedExamIndex];
+                config.exams.splice(draggedExamIndex, 1);
+                config.exams.splice(targetIndex, 0, draggedExam);
+                saveToLocalStorage();
+                updateExamList();
+                showNotification('考试顺序已调整');
+            }
+            
+            document.querySelectorAll('.exam-item').forEach(item => {
+                item.classList.remove('drag-over');
+            });
+        }
+        
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.exam-item, .reminder-item').forEach(item => {
+                item.classList.remove('drag-over');
+            });
+            draggedExamIndex = null;
+            draggedReminderIndex = null;
+        }
+
+        // 拖拽功能 - 提醒
+        let draggedReminderIndex = null;
+        
+        function handleReminderDragStart(e) {
+            draggedReminderIndex = parseInt(e.target.dataset.index);
+            e.target.classList.add('dragging');
+        }
+        
+        function handleReminderDrop(e) {
+            e.preventDefault();
+            const targetIndex = parseInt(e.target.closest('.reminder-item').dataset.index);
+            
+            if (draggedReminderIndex !== null && draggedReminderIndex !== targetIndex) {
+                const draggedReminder = config.reminders[draggedReminderIndex];
+                config.reminders.splice(draggedReminderIndex, 1);
+                config.reminders.splice(targetIndex, 0, draggedReminder);
+                saveToLocalStorage();
+                updateReminderList();
+                showNotification('提醒顺序已调整');
+            }
+            
+            document.querySelectorAll('.reminder-item').forEach(item => {
+                item.classList.remove('drag-over');
+            });
+        }
+
+        // 显示通知
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const examModal = document.getElementById('examModal');
+            const reminderModal = document.getElementById('reminderModal');
+            const helpModal = document.getElementById('helpModal');
+            
+            if (event.target === examModal) {
+                closeExamModal();
+            }
+            if (event.target === reminderModal) {
+                closeReminderModal();
+            }
+            if (event.target === helpModal) {
+                closeHelpModal();
+            }
+        }
+
+        // 缩放功能
+        let currentZoom = 100;
+        const zoomLevels = [75, 90, 100, 110, 125, 150];
+
+        function zoomIn() {
+            const currentIndex = zoomLevels.indexOf(currentZoom);
+            if (currentIndex < zoomLevels.length - 1) {
+                currentZoom = zoomLevels[currentIndex + 1];
+                applyZoom();
+            }
+        }
+
+        function zoomOut() {
+            const currentIndex = zoomLevels.indexOf(currentZoom);
+            if (currentIndex > 0) {
+                currentZoom = zoomLevels[currentIndex - 1];
+                applyZoom();
+            }
+        }
+
+        function resetZoom() {
+            currentZoom = 100;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const container = document.querySelector('.container');
+            container.className = container.className.replace(/zoom-\d+/g, '');
+            
+            if (currentZoom !== 100) {
+                container.classList.add(`zoom-${currentZoom}`);
+            }
+            
+            localStorage.setItem('zoomLevel', currentZoom);
+            showNotification(`缩放: ${currentZoom}%`);
+        }
+
+        // 夜间模式功能
+        function toggleDarkMode() {
+            const body = document.body;
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                darkModeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                darkModeBtn.classList.add('active');
+                localStorage.setItem('darkMode', 'true');
+                showNotification('夜间模式已开启');
+            } else {
+                darkModeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                darkModeBtn.classList.remove('active');
+                localStorage.setItem('darkMode', 'false');
+                showNotification('夜间模式已关闭');
+            }
+        }
+
+        // 全屏模式功能
+        function toggleFullscreen() {
+            const body = document.body;
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            
+            body.classList.toggle('fullscreen-mode');
+            
+            if (body.classList.contains('fullscreen-mode')) {
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                fullscreenBtn.classList.add('active');
+                
+                // 更新全屏模式下的考试信息
+                updateFullscreenExamInfo();
+                
+                // 请求浏览器全屏
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                }
+                
+                showNotification('全屏模式已开启');
+            } else {
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                fullscreenBtn.classList.remove('active');
+                
+                // 退出浏览器全屏
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                
+                showNotification('全屏模式已关闭');
+            }
+        }
+
+        // 更新全屏模式下的考试信息
+        function updateFullscreenExamInfo() {
+            const examListContent = document.getElementById('fullscreenExamListContent');
+            
+            const allInstances = getAllExamInstances();
+            
+            if (allInstances.length === 0) {
+                examListContent.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">暂无考试安排</div>';
+                return;
+            }
+            
+            examListContent.innerHTML = '';
+            
+            // 只显示前10个考试实例避免全屏模式下内容过多
+            const displayInstances = allInstances.slice(0, 10);
+            
+            displayInstances.forEach((exam, index) => {
+                const examItem = document.createElement('div');
+                examItem.className = 'exam-item';
+                
+                const status = getExamStatus(exam);
+                const endTime = calculateEndTime(exam.startTime, exam.duration);
+                
+                examItem.innerHTML = `
+                    <div class="item-header">
+                        <div class="item-title">${exam.subject}</div>
+                        <div class="controls">
+                            <span class="status-badge status-${status.class}">${status.text}</span>
+                        </div>
+                    </div>
+                    <div class="item-details">
+                        日期: ${exam.date} | 时间: ${exam.startTime} - ${endTime} | 时长: ${exam.duration}分钟 | 循环：${getRecurrenceText(exam.recurrence, exam.recurrenceEndDate)}
+                    </div>
+                `;
+                
+                examListContent.appendChild(examItem);
+            });
+        }
+
+        // 监听浏览器全屏状态变化
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+        function handleFullscreenChange() {
+            const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+            const body = document。body;
+            const fullscreenBtn = document。getElementById('fullscreenBtn');
+            
+            if (!isFullscreen && body。classList.contains('fullscreen-mode')) {
+                body。classList。remove('fullscreen-mode');
+                fullscreenBtn。innerHTML = '<i class="fas fa-expand"></i>';
+                fullscreenBtn。classList。remove('active');
+            }
+        }
+
+        // 加载保存的设置
+        function loadSettings() {
+            // 加载缩放设置
+            const savedZoom = localStorage。getItem('zoomLevel');
+            if (savedZoom) {
+                currentZoom = parseInt(savedZoom);
+                applyZoom();
+            }
+            
+            // 加载夜间模式设置
+            const savedDarkMode = localStorage.getItem('darkMode');
+            if (savedDarkMode === 'true') {
+                document。body。classList。add('dark-mode');
+                const darkModeBtn = document.getElementById('darkModeBtn');
+                darkModeBtn。innerHTML = '<i class="fas fa-sun"></i>';
+                darkModeBtn。classList。add('active');
+            }
+        }
+
+        // 在现有的DOMContentLoaded事件中调用loadSettings
+        // 注意：loadSettings()应该在现有的初始化函数中调用
+
+        // 键盘快捷键
+        document。addEventListener('keydown'， function(e) {
+            // Ctrl/Cmd + Plus: 放大
+            if ((e。ctrlKey || e。metaKey) && (e。key === '+' || e.key === '=')) {
+                e。preventDefault();
+                zoomIn();
+            }
+            // Ctrl/Cmd + Minus: 缩小
+            else if ((e。ctrlKey || e。metaKey) && e。key === '-') {
+                e。preventDefault();
+                zoomOut();
+            }
+            // Ctrl/Cmd + 0: 重置缩放
+            else if ((e。ctrlKey || e。metaKey) && e。key === '0') {
+                e。preventDefault();
+                resetZoom();
+            }
+            // F11: 全屏模式
+            else if (e。key === 'F11') {
+                e.preventDefault();
+                toggleFullscreen();
+            }
+            // Ctrl/Cmd + D: 夜间模式
+            else if ((e。ctrlKey || e.metaKey) && e.key === 'd') {
+                e。preventDefault();
+                toggleDarkMode();
+            }
+        });
+    </script>
 </body>
 </html>
