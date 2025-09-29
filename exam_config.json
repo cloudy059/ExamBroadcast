@@ -1,53 +1,89 @@
 {
-  "title": "福建省2025年普通高校招生统一考试",
+  "title": "2026届高三年上学期第一次调研考试",
   "exams": [
     {
-      "date": "2025-06-07",
       "subject": "语文",
+      "date": "2025-10-10",
       "startTime": "09:00",
-      "endTime": "11:30"
-    },
+      "duration": 150,
+      "recurrence": "once",
+      "recurrenceEndDate": null
+    }，
     {
-      "date": "2025-06-07",
       "subject": "数学",
+      "date": "2025-10-10",
       "startTime": "15:00",
-      "endTime": "17:00"
+      "duration": 120,
+      "recurrence": "once",
+      "recurrenceEndDate": null
+    }，
+    {
+      "subject": "英语",
+      "date": "2025-10-11",
+      "startTime": "08:00",
+      "duration": 120,
+      "recurrence": "once",
+      "recurrenceEndDate": null
     },
     {
-      "date": "2025-06-08",
-      "subject": "物理/历史",
-      "startTime": "09:00",
-      "endTime": "10:15"
-    },
+      "subject": "物/历",
+      "date": "2025-10-11",
+      "startTime": "10:30",
+      "duration": 75,
+      "recurrence": "once",
+      "recurrenceEndDate": null
+    }，
     {
-      "date": "2025-06-08",
-      "subject": "外语",
+      "subject": "化生政地1",
+      "date": "2025-10-11",
       "startTime": "15:00",
-      "endTime": "17:00"
+      "duration": 75,
+      "recurrence": "once",
+      "recurrenceEndDate": null
     },
     {
-      "date": "2025-06-09",
-      "subject": "化学",
-      "startTime": "08:30",
-      "endTime": "09:45"
+      "subject": "化生政地2",
+      "date": "2025-10-11",
+      "startTime": "16:25",
+      "duration": 75,
+      "recurrence": "once",
+      "recurrenceEndDate": null
+    }
+  ],
+  "reminders": [
+    {
+      "type": "开考前",
+      "minutes": 20,
+      "sound": "before20.mp3",
+      "enabled": true
     },
     {
-      "date": "2025-06-09",
-      "subject": "地理",
-      "startTime": "11:00",
-      "endTime": "12:15"
+      "type": "开考前",
+      "minutes": 15,
+      "sound": "before15.mp3",
+      "enabled": true
     },
     {
-      "date": "2025-06-09",
-      "subject": "思想政治",
-      "startTime": "14:30",
-      "endTime": "15:45"
+      "type": "开考前",
+      "minutes": 5,
+      "sound": "before5.mp3",
+      "enabled": true
     },
     {
-      "date": "2025-06-09",
-      "subject": "生物",
-      "startTime": "17:00",
-      "endTime": "18:15"
+      "type": "开始考试",
+      "sound": "start.mp3",
+      "enabled": true
+    },
+    {
+      "type": "结束前",
+      "minutes": 15,
+      "sound": "end15.mp3",
+      "enabled": true
+    },
+    {
+      "type": "考试结束",
+      "sound": "end.mp3",
+      "enabled": true
     }
   ]
 }
