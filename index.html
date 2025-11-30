@@ -19,19 +19,19 @@
             color: #333;
         }
 
-        .container {
+        。container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        .header {
+        。header {
             text-align: center;
             margin-bottom: 60px;
             position: relative;
         }
 
-        .title {
+        。title {
             font-size: 2.5em;
             font-weight: bold;
             color: white;
@@ -105,7 +105,7 @@
             margin-bottom: 8px;
         }
 
-        .time-value {
+        。time-value {
             font-size: 2.5em;
             font-weight: bold;
             background: linear-gradient(to bottom, #667eea, #764ba2);
@@ -120,21 +120,21 @@
             justify-content: center;
         }
 
-        .progress-single {
+        。progress-single {
             margin-top: 10px;
             transition: background-image 0.3s ease;
         }
 
 
 
-        .main-content {
+        。main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
         @media (max-width: 768px) {
-            .main-content {
+            。main-content {
                 grid-template-columns: 1fr;
             }
         }
@@ -147,7 +147,7 @@
             backdrop-filter: blur(10px);
         }
 
-        .section-title {
+        。section-title {
             font-size: 1.5em;
             font-weight: bold;
             color: #667eea;
@@ -202,7 +202,7 @@
             color: #555;
         }
 
-        .form-group input, .form-group select {
+        。form-group input, .form-group select {
             width: 100%;
             padding: 10px;
             border: 2px solid #e0e0e0;
@@ -216,46 +216,46 @@
             border-color: #667eea;
         }
 
-        .exam-item, .reminder-item {
+        。exam-item, .reminder-item {
             background: rgba(103, 126, 234, 0.05);
             border: 2px solid rgba(103, 126, 234, 0.1);
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 10px;
             cursor: move;
-            transition: all 0.3s ease;
+            transition: 全部 0.3s ease;
         }
 
         .exam-item:hover, .reminder-item:hover {
-            border-color: rgba(103, 126, 234, 0.3);
+            border-color: rgba(103， 126, 234, 0.3);
             transform: translateY(-2px);
         }
 
-        .exam-item.dragging, .reminder-item.dragging {
+        。exam-item。dragging, .reminder-item。dragging {
             opacity: 0.5;
             transform: rotate(5deg);
         }
 
-        .item-header {
+        。item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
 
-        .item-title {
+        。item-title {
             font-weight: bold;
             font-size: 1.1em;
             color: #333;
         }
 
-        .item-details {
+        。item-details {
             color: #666;
             font-size: 0.9em;
             line-height: 1.4;
         }
 
-        .status-badge {
+        。status-badge {
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 0.8em;
@@ -399,79 +399,79 @@
             transition: transform 0.3s ease;
         }
 
-        .seating-notification.show {
+        。seating-notification。show {
             transform: translateX(0);
         }
 
-        .seating-notification.error {
+        。seating-notification.error {
             background: #f44336;
         }
 
-        .seating-notification.warning {
+        。seating-notification。warning {
             background: #ff9800;
         }
 
-        .drag-over {
+        。drag-over {
             border-color: #667eea !important;
         }
 
-        .dragging {
-            background: rgba(103, 126, 234, 0.1) !important;
+        。dragging {
+            background: rgba(103， 126, 234, 0.1) !important;
         }
 
         /* 夜间模式样式 */
-        body.dark-mode {
+        body。dark-mode {
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
         }
 
         body.dark-mode .time-display,
-        body.dark-mode .section {
-            background: rgba(52, 73, 94, 0.95);
+        body。dark-mode .section {
+            background: rgba(52， 73, 94, 0.95);
             color: #ecf0f1;
         }
 
-        body.dark-mode .time-item {
+        body。dark-mode .time-item {
             background: rgba(52, 73, 94, 0.3);
             border-color: rgba(52, 73, 94, 0.5);
         }
 
-        body.dark-mode .time-label {
+        body。dark-mode 。time-label {
             color: #3498db;
         }
 
-        body.dark-mode .section-title {
+        body。dark-mode 。section-title {
             color: #3498db;
         }
 
-        body.dark-mode .form-group label {
+        body。dark-mode 。form-group label {
             color: #bdc3c7;
         }
 
-        body.dark-mode .form-group input,
-        body.dark-mode .form-group select {
-            background: rgba(52, 73, 94, 0.8);
-            border-color: rgba(52, 73, 94, 0.5);
+        body。dark-mode .form-group input,
+        body。dark-mode 。form-group select {
+            background: rgba(52， 73， 94， 0.8);
+            border-color: rgba(52， 73, 94, 0.5);
             color: #ecf0f1;
         }
 
-        body.dark-mode .exam-item,
-        body.dark-mode .reminder-item {
-            background: rgba(52, 73, 94, 0.3);
+        body。dark-mode 。exam-item,
+        body。dark-mode .reminder-item {
+            background: rgba(52， 73, 94， 0.3);
             border: 2px solid #00d4ff;
             border-radius: 12px;
             color: #ecf0f1;
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.4), inset 0 0 10px rgba(0, 212, 255, 0.1);
-            transition: all 0.3s ease;
+            transition: 全部 0.3s ease;
         }
 
         body.dark-mode .exam-item:hover,
-        body.dark-mode .reminder-item:hover {
+        body。dark-mode .reminder-item:hover {
             border-color: #00f5ff;
-            box-shadow: 0 0 25px rgba(0, 245, 255, 0.6), inset 0 0 15px rgba(0, 245, 255, 0.2);
+            box-shadow: 0 0 25px rgba(0， 245， 255, 0.6)， inset 0 0 15px rgba(0, 245, 255, 0.2);
             transform: translateY(-3px);
         }
 
-        body.dark-mode .item-title {
+        body。dark-mode 。item-title {
             color: #ecf0f1;
         }
 
@@ -661,80 +661,80 @@
             transform-origin: top center;
         }
 
-        .zoom-90 {
+        。zoom-90 {
             transform: scale(0.9);
             transform-origin: top center;
         }
 
-        .zoom-110 {
+        。zoom-110 {
             transform: scale(1.1);
             transform-origin: top center;
         }
 
-        .zoom-125 {
+        。zoom-125 {
             transform: scale(1.25);
             transform-origin: top center;
         }
 
-        .zoom-150 {
+        。zoom-150 {
             transform: scale(1.5);
             transform-origin: top center;
         }
 
         /* 响应式调整 */
         @media (max-width: 768px) {
-            .control-buttons {
+            。control-buttons {
                 position: static;
                 justify-content: center;
                 margin-top: 10px;
             }
 
             /* 普通模式下的手机适配 */
-            .time-display {
+            。time-display {
                 padding: 15px;
             }
 
-            .time-grid {
+            。time-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
 
-            .time-item {
+            。time-item {
                 min-height: 100px;
                 padding: 12px;
             }
 
-            .time-label {
+            。time-label {
                 font-size: 1.3em;
             }
 
-            .time-value {
+            。time-value {
                 font-size: 1.8em;
                 line-height: 1.1;
                 word-break: break-all;
             }
 
             /* 全屏模式下的手机适配 */
-            body.fullscreen-mode .time-display {
+            body。fullscreen-mode 。time-display {
                 width: 95vw;
                 padding: 20px;
             }
 
-            body.fullscreen-mode .time-label {
+            body。fullscreen-mode 。time-label {
                 font-size: 1.2em;
             }
 
-            body.fullscreen-mode .time-value {
+            body。fullscreen-mode 。time-value {
                 font-size: 1.8em;
                 line-height: 1.1;
             }
 
-            body.fullscreen-mode .time-item {
+            body。fullscreen-mode 。time-item {
                 min-height: 120px;
                 padding: 15px;
             }
 
-            body.fullscreen-mode .exam-list-content {
+            body。fullscreen-mode 。exam-list-content {
                 grid-template-columns: 1fr;
                 gap: 10px;
             }
@@ -742,54 +742,54 @@
 
         /* 额外小屏幕适配 (小于480px) */
         @media (max-width: 480px) {
-            .time-display {
+            。time-display {
                 padding: 10px;
             }
 
-            .time-item {
+            。time-item {
                 min-height: 80px;
                 padding: 8px;
             }
 
-            .time-label {
+            。time-label {
                 font-size: 1.1em;
             }
 
-            .time-value {
+            。time-value {
                 font-size: 1.5em;
                 line-height: 1.0;
             }
 
-            body.fullscreen-mode .time-value {
+            body。fullscreen-mode .time-value {
                 font-size: 1.5em;
             }
 
-            body.fullscreen-mode .time-label {
+            body。fullscreen-mode .time-label {
                 font-size: 1.0em;
             }
         }
 
         /* 考场安排页面样式 */
-        .seating-content {
+        。seating-content {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0px;
             display: none;
         }
 
-        .seating-content.active {
+        。seating-content.active {
             display: block;
         }
 
-        .main-content.hidden {
+        。main-content。hidden {
             display: none;
         }
 
-        .time-display.hidden {
+        。time-display。hidden {
             display: none;
         }
 
-        .import-btn {
+        。import-btn {
             display: inline-flex;
             align-items: center;
             gap: 5px;
@@ -806,12 +806,12 @@
             white-space: nowrap;
         }
 
-        .import-btn:hover {
+        。import-btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
 
-        .clear-data-btn {
+        。clear-data-btn {
             display: inline-flex;
             align-items: center;
             gap: 5px;
@@ -822,19 +822,19 @@
             cursor: pointer;
             font-size: 0.8em;
             font-weight: bold;
-            transition: all 0.3s ease;
+            transition: 全部 0.3s ease;
             border: none;
             box-shadow: 0 2px 6px rgba(0,0,0,0.12);
             margin-left: 10px;
-            white-space: nowrap;
+            white-space: 现在rap;
         }
 
-        .clear-data-btn:hover {
+        。clear-data-btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
 
-        .seating-arrangement {
+        。seating-arrangement {
             background: rgba(255,255,255,0.95);
             border-radius: 15px;
             padding: 25px;
@@ -843,7 +843,7 @@
             min-height: 400px;
         }
 
-        .no-data {
+        。no-data {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -853,13 +853,13 @@
             font-size: 1.1em;
         }
 
-        .no-data i {
+        。no-data i {
             font-size: 3em;
             margin-bottom: 15px;
             opacity: 0.5;
         }
 
-        .seating-stats {
+        。seating-stats {
             margin-left: auto;
             display: flex;
             gap: 15px;
@@ -867,14 +867,14 @@
             color: #666;
         }
 
-        .stat-item {
-            background: rgba(103, 126, 234, 0.1);
+        。stat-item {
+            background: rgba(103， 126， 234， 0.1);
             padding: 5px 12px;
             border-radius: 15px;
             font-weight: 500;
         }
 
-        .seating-grid {
+        。seating-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 20px;
@@ -883,7 +883,7 @@
         }
 
         .seating-group {
-            background: rgba(103, 126, 234, 0.05);
+            background: rgba(103， 126， 234， 0.05);
             border: 2px solid rgba(103, 126, 234, 0.2);
             border-radius: 8px;
             padding: 8px;
@@ -935,44 +935,44 @@
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
         }
 
-        .seat-number {
+        。seat-number {
             font-size: 1.1em;
             color: #667eea;
             font-weight: bold;
             margin-right: 8px;
         }
 
-        .student-name {
+        。student-name {
             font-weight: bold;
             color: #333;
             font-size: 1.3em;
         }
 
         /* 座位控制区域样式 */
-        .seating-controls {
+        。seating-controls {
             display: flex;
             gap: 8px;
             margin: 15px 0;
-            flex-wrap: nowrap;
+            flex-wrap: 现在rap;
             align-items: center;
             justify-content: flex-start;
         }
 
-        .control-group {
+        。control-group {
             display: flex;
             align-items: center;
             gap: 5px;
             flex-shrink: 0;
         }
 
-        .control-group label {
+        。control-group label {
             font-weight: 500;
             font-size: 0.8em;
-            white-space: nowrap;
+            white-space: 现在rap;
             min-width: fit-content;
         }
 
-        .control-group input {
+        。control-group input {
             padding: 4px 6px;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -983,11 +983,11 @@
             width: 90px;
         }
 
-        .control-group input[type="number"] {
+        。control-group input[输入="number"] {
             width: 50px;
         }
 
-        .control-group input#groupSizes {
+        。control-group input#groupSizes {
             width: 85px;
             font-size: 18px;
         }
@@ -1009,15 +1009,15 @@
         }
 
         /* 班级学生网格显示样式 */
-        .class-students-grid {
+        。class-students-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(5， 1fr);
             gap: 4px;
             padding: 10px;
         }
 
-        .class-student-item {
-            background: rgba(255, 255, 255, 0.95);
+        。class-student-item {
+            background: rgba(255， 255, 255， 0.95);
             border: 1px solid #e0e0e0;
             border-radius: 4px;
             padding: 8px 10px;
@@ -1030,35 +1030,35 @@
             min-width: 0;
         }
 
-        .class-student-item:hover {
+        。class-student-item:hover {
             transform: translateY(-1px);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
         }
 
-        .class-student-item .student-name {
+        。class-student-item 。student-name {
             font-weight: bold;
             color: #2c3e50;
             flex-shrink: 0;
             font-size: 16px;
         }
 
-        .class-student-item .class-seat-number {
+        。class-student-item 。class-seat-number {
             color: #3498db;
             font-weight: bold;
             font-size: 16px;
             margin-right: 4px;
         }
 
-        .class-student-item .exam-seat {
+        。class-student-item .exam-seat {
             color: #e74c3c;
-            white-space: nowrap;
+            white-space: 现在rap;
             font-weight: bold;
             font-size: 16px;
         }
 
         /* 夜间模式下的考场安排样式 */
-        body.dark-mode .seating-arrangement {
-            background: rgba(52, 73, 94, 0.95);
+        body。dark-mode 。seating-arrangement {
+            background: rgba(52， 73, 94, 0.95);
             color: #ecf0f1;
         }
 
@@ -1066,7 +1066,7 @@
             color: #ecf0f1;
         }
 
-        body.dark-mode .control-group input {
+        body。dark-mode .control-group input {
             background-color: #2c3e50;
             border-color: rgba(116, 192, 252, 0.3);
             color: #ecf0f1;
@@ -1075,7 +1075,7 @@
         body.dark-mode select {
             background: rgba(52, 73, 94, 0.9);
             color: #ecf0f1;
-            border-color: rgba(116, 192, 252, 0.3);
+            border-color: rgba(116， 192， 252， 0.3);
         }
 
         /* 班级学生网格的dark mode样式 */
@@ -1097,7 +1097,7 @@
             color: #74c0fc;
         }
 
-        body.dark-mode .class-student-item .exam-seat {
+        body。dark-mode 。class-student-item 。exam-seat {
             color: #ff6b6b;
         } 
 
@@ -1112,33 +1112,33 @@
             border-color: rgba(116, 192, 252, 0.3);
         }
 
-        body.dark-mode .student-name {
+        body。dark-mode 。student-name {
             color: #ecf0f1;
         }
 
-        body.dark-mode .seat-number {
+        body。dark-mode .seat-number {
             color: #3498db;
         }
 
-        body.dark-mode .group-header {
+        body。dark-mode .group-header {
             background: #3498db;
         }
 
-        body.dark-mode .seating-stats {
+        body。dark-mode 。seating-stats {
             color: #bdc3c7;
         }
 
-        body.dark-mode .stat-item {
+        body。dark-mode .stat-item {
             background: rgba(52, 158, 218, 0.2);
         }
 
-        body.dark-mode .no-data {
+        body。dark-mode .no-data {
             color: #7f8c8d;
         }
 
         /* 全屏模式下的夜间模式考场安排样式 */
-        body.fullscreen-mode.dark-mode .seating-arrangement {
-            background: rgba(52, 73, 94, 0.95);
+        body。fullscreen-mode。dark-mode .seating-arrangement {
+            background: rgba(52， 73, 94, 0.95);
         }
 
         body.fullscreen-mode.dark-mode .seating-content.active {
@@ -1169,7 +1169,7 @@
                 </button>
                 <label class="control-btn" title="导入配置" style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
                     <i class="fas fa-upload"></i>
-                    <input type="file" class="file-input" accept=".json" onchange="importConfig(event)" style="display: none;">
+                    <input 输入="file" class="file-input" accept=".json" onchange="importConfig(event)" style="display: none;">
                 </label>
                 <button class="control-btn" onclick="clearLocalStorage()" title="清除缓存">
                     <i class="fas fa-trash-alt"></i>
@@ -1253,11 +1253,11 @@
                         </div>
                         <div class="control-group">
                             <label for="groupCount">组数：</label>
-                            <input type="number" id="groupCount" value="5" min="1" max="10" onchange="updateGroupSettings()">
+                            <input 输入="number" id="groupCount" value="5" min="1" max="10" onchange="updateGroupSettings()">
                         </div>
                         <div class="control-group">
                             <label for="groupSizes">各组人数：</label>
-                            <input type="text" id="groupSizes" placeholder="如：6,7,7,7,7" onchange="updateSeatingConfig(); const queryType = document.getElementById('queryTypeSelect').value; if (queryType === 'examRoom') { updateSeatingArrangement(); }">
+                            <input 输入="text" id="groupSizes" placeholder="如：6,7,7,7,7" onchange="updateSeatingConfig(); const queryType = document.getElementById('queryTypeSelect').value; if (queryType === 'examRoom') { updateSeatingArrangement(); }">
                         </div>
                     </div>
                     <div class="seating-stats" id="seatingStats"></div>
@@ -1280,11 +1280,11 @@
             <form id="examForm">
                 <div class="form-group">
                     <label for="examSubject">科目:</label>
-                    <input type="text" id="examSubject" required>
+                    <input 输入="text" id="examSubject" required>
                 </div>
                 <div class="form-group">
                     <label for="examDate">日期:</label>
-                    <input type="date" id="examDate" required>
+                    <input 输入="date" id="examDate" required>
                 </div>
                 <div class="form-group">
                     <label for="examStartTime">开始时间:</label>
@@ -1292,7 +1292,7 @@
                 </div>
                 <div class="form-group">
                     <label for="examDuration">时长(分钟):</label>
-                    <input type="number" id="examDuration" min="1" required>
+                    <input 输入="number" id="examDuration" min="1" required>
                 </div>
                 <div class="form-group">
                     <label for="examRecurrence">循环设置:</label>
@@ -1415,7 +1415,7 @@
                     <li><strong>缩放</strong>：点击放大镜、缩小镜调整页面大小</li>
                     <li><strong>导出/导入</strong>：保存和载入考试配置文件</li>
                     <li><strong>清除缓存</strong>：一键清除所有本地存储的数据，重置系统状态</li>
-                    <li><strong>锁定/解锁</strong>：防止误操作，锁定状态下无法修改数据</li>
+                    <li><strong>锁定/解锁</strong>：防止误操作，锁定状态下无法修改数据，密码456123</li>
                     <li><strong>夜间模式</strong>：切换深色主题，保护眼睛</li>
                     <li><strong>全屏模式</strong>：隐藏管理界面，专注显示时间和考试信息</li>
                 </ul>
@@ -3996,3 +3996,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </body>
 </html>
+
