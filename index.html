@@ -512,7 +512,7 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0， 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         body.fullscreen-mode .time-display {
@@ -532,18 +532,18 @@
             display: none;
         }
 
-        body。fullscreen-mode 。time-grid {
+        body.fullscreen-mode .time-grid {
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
 
-        body。fullscreen-mode 。time-item {
+        body.fullscreen-mode .time-item {
             min-height: 120px;
             padding: 15px;
             overflow: hidden;
         }
 
-        body。fullscreen-mode 。time-label {
+        body.fullscreen-mode .time-label {
             font-size: 1.8em;
         }
 
@@ -559,7 +559,7 @@
             z-index: 1001;
         }
 
-        。fullscreen-exam-list {
+        .fullscreen-exam-list {
             margin-top: 15px;
             padding: 20px;
             background: rgba(255,255,255,0.95);
@@ -1171,6 +1171,9 @@
                     <i class="fas fa-upload"></i>
                     <input type="file" class="file-input" accept=".json" onchange="importConfig(event)" style="display: none;">
                 </label>
+                <button class="control-btn" onclick="clearLocalStorage()" title="清除缓存">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
                 <button class="control-btn" onclick="toggleDarkMode()" title="夜间模式" id="darkModeBtn">
                     <i class="fas fa-moon"></i>
                 </button>
@@ -1411,6 +1414,8 @@
                 <ul>
                     <li><strong>缩放</strong>：点击放大镜、缩小镜调整页面大小</li>
                     <li><strong>导出/导入</strong>：保存和载入考试配置文件</li>
+                    <li><strong>清除缓存</strong>：一键清除所有本地存储的数据，重置系统状态</li>
+                    <li><strong>锁定/解锁</strong>：防止误操作，锁定状态下无法修改数据</li>
                     <li><strong>夜间模式</strong>：切换深色主题，保护眼睛</li>
                     <li><strong>全屏模式</strong>：隐藏管理界面，专注显示时间和考试信息</li>
                 </ul>
@@ -1426,10 +1431,14 @@
 
                 <h3>🪑 考场安排</h3>
                 <ul>
-                    <li><strong>导入数据</strong>：表头包含班级、班级座号、姓名、考场、座号等信息</li>                   
+                    <li><strong>导入数据</strong>：支持导入Excel文件，包含学生姓名、考场、座号、班级座号等信息</li>
+                    <li><strong>数据格式</strong>：Excel文件需包含"姓名"、"考场"、"座号"等必要字段</li>
                     <li><strong>考场查询</strong>：输入考场号查看该考场的学生座位安排，按座号升序显示</li>
-                    <li><strong>班级查询</strong>：切换到班级模式，输入班级号查看班级的学生座位安排</li>                    
-                    <li><strong>清除数据</strong>：可一键清除所有已导入的考场安排数据</li>                   
+                    <li><strong>班级查询</strong>：切换到班级模式，输入班级号查看班级学生信息</li>
+                    <li><strong>班级排序</strong>：班级学生按"班级座号"字段升序排列，若无此字段则按"座号"排序</li>
+                    <li><strong>成功提示</strong>：导入成功后会显示导入的学生数量和考场数量</li>
+                    <li><strong>清除数据</strong>：可一键清除所有已导入的考场安排数据</li>
+                    <li><strong>锁定保护</strong>：启用锁定后，考场安排的导入和清除功能将被禁用</li>
                 </ul>
 
                 <h3>💾 数据保存</h3>
@@ -2645,6 +2654,23 @@
             reader.readAsText(file);
         }
 
+        // 清除本地存储
+        function clearLocalStorage() {
+            // 检查锁定状态
+            if (isLocked) {
+                showNotification('当前处于锁定状态，无法清除缓存', 'error');
+                return;
+            }
+
+            if (confirm('确定要清除所有本地数据吗？这将重置所有设置、考试和提醒，且无法恢复。')) {
+                localStorage.clear();
+                showNotification('本地数据已清除，系统即将刷新');
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            }
+        }
+
         // 拖拽功能 - 考试
         let draggedExamIndex = null;
         
@@ -3380,14 +3406,14 @@
         }
 
         function queryClassStudents(classNumber) {
-            if (!studentsData。length) {
-                showSeatingNotification('请先导入学生数据'， 'error');
+            if (!studentsData.length) {
+                showSeatingNotification('请先导入学生数据', 'error');
                 return;
             }
             
             if (!classNumber) {
                 // 清空座位安排显示
-                const seatingArrangement = document。getElementById('seatingArrangement');
+                const seatingArrangement = document.getElementById('seatingArrangement');
                 seatingArrangement.innerHTML = `
                     <div class="no-data">
                         <i class="fas fa-users"></i>
@@ -3396,7 +3422,7 @@
                 `;
                 document.getElementById('seatingStats').innerHTML = '';
                 // 清空本地存储的班级信息
-                localStorage。removeItem('currentClassStudents');
+                localStorage.removeItem('currentClassStudents');
                 return;
             }
             
@@ -3406,7 +3432,7 @@
                 if (!studentClass) return false;
                 
                 // 提取班级中的数字
-                const classMatch = studentClass。toString()。match(/(\d+)/);
+                const classMatch = studentClass.toString().match(/(\d+)/);
                 if (classMatch) {
                     return classMatch[1] === classNumber.toString();
                 }
@@ -3414,14 +3440,14 @@
             });
             
             if (classStudents.length === 0) {
-                const seatingArrangement = document。getElementById('seatingArrangement');
+                const seatingArrangement = document.getElementById('seatingArrangement');
                 seatingArrangement.innerHTML = `
                     <div class="no-data">
                         <i class="fas fa-exclamation-triangle"></i>
                         <p>未找到班级 ${classNumber} 的学生信息</p>
                     </div>
                 `;
-                document.getElementById('seatingStats')。innerHTML = '';
+                document.getElementById('seatingStats').innerHTML = '';
                 // 清空本地存储的班级信息
                 localStorage.removeItem('currentClassStudents');
                 return;
@@ -3436,9 +3462,9 @@
             
             // 保存班级学生信息到本地存储
             const classInfo = {
-                classNumber: classNumber，
-                students: classStudents，
-                timestamp: new Date()。toISOString()
+                classNumber: classNumber,
+                students: classStudents,
+                timestamp: new Date().toISOString()
             };
             localStorage.setItem('currentClassStudents', JSON.stringify(classInfo));
             
@@ -3913,19 +3939,19 @@
             // 获取今天的所有考试
             const todayExams = allInstances.filter(exam => exam.date === today);
             
-            if (todayExams。length === 0) {
+            if (todayExams.length === 0) {
                 return; // 今天没有考试
             }
             
             // 检查今天所有考试是否都已结束
-            const allExamsEnded = todayExams。every(exam => {
+            const allExamsEnded = todayExams.every(exam => {
                 const examStart = new Date(`${exam.date} ${exam.startTime}`);
-                const examEnd = new Date(examStart。getTime() + exam.duration * 60000);
-                return 当前 >= examEnd;
+                const examEnd = new Date(examStart.getTime() + exam.duration * 60000);
+                return now >= examEnd;
             });
             
             if (allExamsEnded) {
-                console。log('本场全部考试已结束，准备恢复座位安排数据');
+                console.log('本场全部考试已结束，准备恢复座位安排数据');
                 restoreSeatingDataAfterExams();
             }
         }
@@ -3933,35 +3959,35 @@
         // 在考试全部结束后恢复座位安排数据
         function restoreSeatingDataAfterExams() {
             const savedData = localStorage.getItem('studentsData');
-            const importTime = localStorage。getItem('studentsDataImportTime');
+            const importTime = localStorage.getItem('studentsDataImportTime');
             
             if (savedData && importTime) {
                 try {
                     const data = JSON.parse(savedData);
                     const importDate = new Date(importTime);
-                    const 当前 = new Date();
+                    const now = new Date();
                     
                     // 检查数据是否是今天导入的
-                    const isToday = importDate.toDateString() === 当前.toDateString();
+                    const isToday = importDate.toDateString() === now.toDateString();
                     
-                    if (isToday && Array。isArray(data) && data.length > 0) {
+                    if (isToday && Array.isArray(data) && data.length > 0) {
                         studentsData = data;
-                        showSeatingNotification(`考试结束，已恢复考场安排数据：${data。length} 条学生记录`);
+                        showSeatingNotification(`考试结束，已恢复考场安排数据：${data.length} 条学生记录`);
                         
                         // 如果当前在座位安排页面，更新显示
-                        if (document。body。classList。contains('seating-page')) {
+                        if (document.body.classList.contains('seating-page')) {
                             updateSeatingArrangement();
                         }
                         
                         console.log('座位安排数据已恢复');
                     } else {
-                        console。log('座位安排数据不是今天导入的，不进行恢复');
+                        console.log('座位安排数据不是今天导入的，不进行恢复');
                     }
                 } catch (error) {
                     console.error('恢复座位安排数据失败:', error);
                 }
             } else {
-                console。log('没有找到需要恢复的座位安排数据');
+                console.log('没有找到需要恢复的座位安排数据');
             }
         }
     </script>
