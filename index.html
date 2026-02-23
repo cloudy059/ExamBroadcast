@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <link rel="shortcut icon" href="./favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>考试管理系统</title>
@@ -13,70 +14,97 @@
         }
 
         body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
-            color: #333;
+            color: #1d1d1f;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 20px 20px 120px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 30px;
             position: relative;
         }
 
         .title {
             font-size: 2.5em;
-            font-weight: bold;
+            font-weight: 700;
             color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 20px rgba(0,0,0,0.25);
             margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
         .control-buttons {
-            position: absolute;
-            top: 70px;
-            right: 0;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            gap: 8px;
+            gap: 10px;
+            background: rgba(255,255,255,0.85);
+            padding: 12px 20px;
+            border-radius: 25px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.4);
+            z-index: 1000;
         }
 
         .control-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid rgba(255,255,255,0.3);
-            padding: 8px 12px;
-            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            color: #1d1d1f;
+            border: 1px solid rgba(255,255,255,0.6);
+            padding: 12px 16px;
+            border-radius: 18px;
             cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s ease;
+            font-size: 1.1em;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7);
+            min-width: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .control-btn:hover {
-            background: rgba(255,255,255,0.3);
-            border-color: rgba(255,255,255,0.5);
-            transform: translateY(-2px);
+            background: rgba(255,255,255,0.95);
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.8);
         }
 
         .control-btn.active {
-            background: rgba(255,255,255,0.4);
-            border-color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.98);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12), 0 3px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9);
+            transform: translateY(-2px) scale(1.02);
         }
 
         .time-display {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
+            background: rgba(255,255,255,0.72);
+            border-radius: 22px;
             padding: 25px;
             margin-bottom: 10px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            border: 1px solid rgba(255,255,255,0.4);
         }
 
         .time-grid {
@@ -87,32 +115,39 @@
 
         .time-item {
             text-align: center;
-            padding: 15px;
-            background: rgba(103, 126, 234, 0.1);
-            border-radius: 10px;
-            border: 2px solid rgba(103, 126, 234, 0.2);
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.55);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 120px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .time-item:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .time-label {
-            font-size: 1.8em;
-            font-weight: bold;
+            font-size: 1.6em;
+            font-weight: 600;
             color: #667eea;
             margin-bottom: 8px;
         }
 
         .time-value {
             font-size: 2.5em;
-            font-weight: bold;
-            background: linear-gradient(to bottom, #667eea, #764ba2);
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             line-height: 1.2;
             display: flex;
             flex-direction: column;
@@ -124,8 +159,6 @@
             margin-top: 10px;
             transition: background-image 0.3s ease;
         }
-
-
 
         .main-content {
             display: grid;
@@ -140,17 +173,24 @@
         }
 
         .section {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
+            background: rgba(255,255,255,0.72);
+            border-radius: 22px;
             padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            border: 1px solid rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6);
         }
 
         .section-title {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #667eea;
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #1d1d1f;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -158,37 +198,54 @@
         }
 
         .btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
+            padding: 10px 18px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 0.9em;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             margin: 2px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
 
         .btn-small {
-            padding: 5px 10px;
-            font-size: 0.8em;
+            padding: 6px 12px;
+            font-size: 0.85em;
         }
 
         .btn-danger {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
         }
 
         .btn-success {
-            background: linear-gradient(45deg, #51cf66, #40c057);
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+            box-shadow: 0 4px 12px rgba(81, 207, 102, 0.3);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 6px 20px rgba(81, 207, 102, 0.4);
         }
 
         .btn-warning {
-            background: linear-gradient(45deg, #ffd43b, #fab005);
+            background: linear-gradient(135deg, #ffd43b 0%, #fab005 100%);
+            box-shadow: 0 4px 12px rgba(255, 212, 59, 0.3);
+        }
+
+        .btn-warning:hover {
+            box-shadow: 0 6px 20px rgba(255, 212, 59, 0.4);
         }
 
         .form-group {
@@ -217,18 +274,20 @@
         }
 
         .exam-item, .reminder-item {
-            background: rgba(103, 126, 234, 0.05);
-            border: 2px solid rgba(103, 126, 234, 0.1);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
             padding: 15px;
             margin-bottom: 10px;
             cursor: move;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .exam-item:hover, .reminder-item:hover {
-            border-color: rgba(103, 126, 234, 0.3);
-            transform: translateY(-2px);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
 
         .exam-item.dragging, .reminder-item.dragging {
@@ -295,13 +354,16 @@
         }
 
         .modal-content {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.92);
             margin: 5% auto;
             padding: 30px;
-            border-radius: 15px;
+            border-radius: 22px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 8px 32px rgba(0,0,0,0.15);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         .close {
@@ -421,74 +483,115 @@
 
         /* 夜间模式样式 */
         body.dark-mode {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d5a 25%, #4a3f6b 50%, #2d2d5a 75%, #1a1a2e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
         }
 
         body.dark-mode .time-display,
         body.dark-mode .section {
-            background: rgba(52, 73, 94, 0.95);
-            color: #ecf0f1;
+            background: rgba(40, 40, 60, 0.75);
+            color: #f5f5f7;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         body.dark-mode .time-item {
-            background: rgba(52, 73, 94, 0.3);
-            border-color: rgba(52, 73, 94, 0.5);
+            background: rgba(60, 60, 80, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .time-item:hover {
+            background: rgba(70, 70, 90, 0.6);
         }
 
         body.dark-mode .time-label {
-            color: #3498db;
+            color: #a78bfa;
         }
 
         body.dark-mode .section-title {
-            color: #3498db;
+            color: #f5f5f7;
         }
 
         body.dark-mode .form-group label {
-            color: #bdc3c7;
+            color: rgba(245, 245, 247, 0.8);
         }
 
         body.dark-mode .form-group input,
         body.dark-mode .form-group select {
-            background: rgba(52, 73, 94, 0.8);
-            border-color: rgba(52, 73, 94, 0.5);
-            color: #ecf0f1;
+            background: rgba(60, 60, 80, 0.6);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #f5f5f7;
         }
 
         body.dark-mode .exam-item,
         body.dark-mode .reminder-item {
-            background: rgba(52, 73, 94, 0.3);
-            border: 2px solid #00d4ff;
-            border-radius: 12px;
-            color: #ecf0f1;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4), inset 0 0 10px rgba(0, 212, 255, 0.1);
+            background: rgba(60, 60, 80, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            color: #f5f5f7;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
         }
 
         body.dark-mode .exam-item:hover,
         body.dark-mode .reminder-item:hover {
-            border-color: #00f5ff;
-            box-shadow: 0 0 25px rgba(0, 245, 255, 0.6), inset 0 0 15px rgba(0, 245, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
             transform: translateY(-3px);
         }
 
         body.dark-mode .item-title {
-            color: #ecf0f1;
+            color: #f5f5f7;
         }
 
         body.dark-mode .item-details {
-            color: #bdc3c7;
+            color: rgba(245, 245, 247, 0.7);
+        }
+
+        body.dark-mode .control-buttons {
+            background: rgba(40, 40, 60, 0.85);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .control-btn {
+            background: rgba(60, 60, 80, 0.9);
+            color: #f5f5f7;
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .control-btn:hover {
+            background: rgba(80, 80, 100, 0.95);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        body.dark-mode .control-btn.active {
+            background: rgba(100, 100, 120, 0.98);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), 0 3px 8px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         /* 全屏模式样式 */
         body.fullscreen-mode .header {
             position: fixed;
-            top: 20px;
+            top: 60px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 1002;
+            z-index: 1003;
             margin-bottom: 0px;
             width: 100%;
             max-width: 1100px;
+            text-align: center;
+        }
+
+        body.fullscreen-mode .title {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.25);
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
         body.fullscreen-mode .main-content {
@@ -502,7 +605,7 @@
         body.fullscreen-mode .seating-content.active {
             display: block;
             position: fixed;
-            top: 120px;
+            top: 150px;
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
@@ -517,7 +620,7 @@
 
         body.fullscreen-mode .time-display {
             position: fixed;
-            top: 120px;
+            top: 150px;
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
@@ -554,25 +657,31 @@
 
         body.fullscreen-mode .control-buttons {
             position: fixed;
-            top: 60px;
-            right: 20px;
-            z-index: 1001;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) scale(1);
+            transform-origin: bottom center;
+            z-index: 1002;
+            width: auto;
+            max-width: 90%;
         }
 
         .fullscreen-exam-list {
             margin-top: 15px;
             padding: 20px;
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.72);
+            border-radius: 22px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            border: 1px solid rgba(255,255,255,0.4);
             overflow-y: visible;
         }
 
         .exam-list-title {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #667eea;
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #1d1d1f;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -596,63 +705,31 @@
         }
 
         body.dark-mode .exam-list-title {
-            color: #3498db;
+            color: #f5f5f7;
         }
 
         body.dark-mode .fullscreen-exam-list {
-            background: rgba(52, 73, 94, 0.95);
-            color: #ecf0f1;
+            background: rgba(40, 40, 60, 0.75);
+            color: #f5f5f7;
         }
 
         body.dark-mode .time-label {
-            color: #00f5ff;
-            text-shadow: 0 0 10px rgba(0, 245, 255, 0.6);
+            color: #a78bfa;
         }
 
         body.dark-mode .time-value {
-            background: linear-gradient(45deg, #00f5ff, #ff1493, #ffd700, #00ff00, #8a2be2);
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #e879f9 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            background-size: 300% 300%;
-            animation: rainbow-glow 3s ease-in-out infinite;
-            text-shadow: 0 0 20px rgba(255, 20, 147, 0.8), 0 0 30px rgba(0, 245, 255, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
-            filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.7));
-        }
-
-        @keyframes rainbow-glow {
-            0% {
-                background-position: 0% 50%;
-                filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.7)) brightness(1.2);
-            }
-            50% {
-                background-position: 100% 50%;
-                filter: drop-shadow(0 0 25px rgba(255, 20, 147, 0.9)) brightness(1.5);
-            }
-            100% {
-                background-position: 0% 50%;
-                filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.7)) brightness(1.2);
-            }
-        }
-
-        body.dark-mode .time-item {
-            background: rgba(52, 73, 94, 0.3);
-            border-color: rgba(116, 192, 252, 0.3);
-        }
-
-        body.dark-mode .time-display {
-            background: rgba(52, 73, 94, 0.95);
         }
 
         body.dark-mode .title {
-            background: linear-gradient(45deg, #00f5ff, #ff1493, #ffd700, #00ff00, #8a2be2);
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #e879f9 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            background-size: 300% 300%;
-            animation: rainbow-glow 3s ease-in-out infinite;
-            text-shadow: 0 0 20px rgba(255, 20, 147, 0.8), 0 0 30px rgba(0, 245, 255, 0.6), 0 0 40px rgba(255, 215, 0, 0.4);
-            filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.7));
+            text-shadow: none;
         }
 
         /* 缩放样式 */
@@ -684,9 +761,21 @@
         /* 响应式调整 */
         @media (max-width: 768px) {
             .control-buttons {
-                position: static;
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 10px 15px;
+                max-width: 90%;
                 justify-content: center;
-                margin-top: 10px;
+            }
+
+            .control-btn {
+                padding: 10px 14px;
+                font-size: 1em;
+                min-width: 40px;
             }
 
             /* 普通模式下的手机适配 */
@@ -835,11 +924,14 @@
         }
 
         .seating-arrangement {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
+            background: rgba(255,255,255,0.72);
+            border-radius: 22px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            border: 1px solid rgba(255,255,255,0.4);
             min-height: 400px;
         }
 
@@ -883,22 +975,27 @@
         }
 
         .seating-group {
-            background: rgba(103, 126, 234, 0.05);
-            border: 2px solid rgba(103, 126, 234, 0.2);
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
             padding: 8px;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: stretch;
+            transition: all 0.3s ease;
+        }
+
+        .seating-group:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
         }
 
         .group-header {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
             text-align: center;
             order: 2;
             margin-top: 8px;
@@ -916,23 +1013,25 @@
         }
 
         .seat {
-            background: white;
-            border: 2px solid #e1e8ed;
-            border-radius: 6px;
-            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 10px;
+            padding: 8px 14px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             width: 150px;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .seat:hover {
-            border-color: #667eea;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
         }
 
         .seat-number {
@@ -1058,139 +1157,376 @@
 
         /* 夜间模式下的考场安排样式 */
         body.dark-mode .seating-arrangement {
-            background: rgba(52, 73, 94, 0.95);
-            color: #ecf0f1;
+            background: rgba(40, 40, 60, 0.75);
+            color: #f5f5f7;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         body.dark-mode .control-group label {
-            color: #ecf0f1;
+            color: #f5f5f7;
         }
 
         body.dark-mode .control-group input {
-            background-color: #2c3e50;
-            border-color: rgba(116, 192, 252, 0.3);
-            color: #ecf0f1;
+            background-color: rgba(60, 60, 80, 0.6);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #f5f5f7;
         }
 
         body.dark-mode select {
-            background: rgba(52, 73, 94, 0.9);
-            color: #ecf0f1;
-            border-color: rgba(116, 192, 252, 0.3);
+            background: rgba(60, 60, 80, 0.6);
+            color: #f5f5f7;
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         /* 班级学生网格的dark mode样式 */
         body.dark-mode .class-student-item {
-            background: rgba(44, 62, 80, 0.95);
-            border-color: rgba(116, 192, 252, 0.3);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            background: rgba(60, 60, 80, 0.5);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         body.dark-mode .class-student-item:hover {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         body.dark-mode .class-student-item .student-name {
-            color: #ecf0f1;
+            color: #f5f5f7;
         }
 
         body.dark-mode .class-student-item .class-seat-number {
-            color: #74c0fc;
+            color: #a78bfa;
         }
 
         body.dark-mode .class-student-item .exam-seat {
-            color: #ff6b6b;
+            color: #f87171;
         } 
 
         body.dark-mode .seat {
-            background: rgba(44, 62, 80, 0.8);
-            border-color: rgba(116, 192, 252, 0.3);
-            color: #ecf0f1;
+            background: rgba(60, 60, 80, 0.5);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #f5f5f7;
         }
 
         body.dark-mode .seating-group {
-            background: rgba(52, 73, 94, 0.3);
-            border-color: rgba(116, 192, 252, 0.3);
+            background: rgba(60, 60, 80, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
         body.dark-mode .student-name {
-            color: #ecf0f1;
+            color: #f5f5f7;
         }
 
         body.dark-mode .seat-number {
-            color: #3498db;
+            color: #a78bfa;
         }
 
         body.dark-mode .group-header {
-            background: #3498db;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         body.dark-mode .seating-stats {
-            color: #bdc3c7;
+            color: rgba(245, 245, 247, 0.7);
         }
 
         body.dark-mode .stat-item {
-            background: rgba(52, 158, 218, 0.2);
+            background: rgba(102, 126, 234, 0.2);
         }
 
         body.dark-mode .no-data {
-            color: #7f8c8d;
+            color: rgba(245, 245, 247, 0.5);
         }
 
         /* 全屏模式下的夜间模式考场安排样式 */
         body.fullscreen-mode.dark-mode .seating-arrangement {
-            background: rgba(52, 73, 94, 0.95);
+            background: rgba(40, 40, 60, 0.75);
         }
 
         body.fullscreen-mode.dark-mode .seating-content.active {
-            background: rgba(52, 73, 94, 0.95);
+            background: rgba(40, 40, 60, 0.75);
+        }
+
+        /* Mac风格圆形时钟样式 */
+        .analog-clock-item {
+            cursor: pointer;
+            min-height: 220px !important;
+        }
+
+        .analog-clock {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .clock-face {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1),
+                inset 0 2px 4px rgba(255, 255, 255, 0.9),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            flex-shrink: 0;
+        }
+
+        .clock-face::before {
+            content: '12';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .clock-face::after {
+            content: '6';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .clock-face .hour-3,
+        .clock-face .hour-9 {
+            position: absolute;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .clock-face .hour-3 {
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .clock-face .hour-9 {
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .clock-face .dot-marker {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #1d1d1f;
+            border-radius: 50%;
+        }
+
+        .clock-face .dot-1 { top: 18%; right: 24%; }
+        .clock-face .dot-2 { top: 35%; right: 12%; }
+        .clock-face .dot-4 { top: 65%; right: 12%; }
+        .clock-face .dot-5 { top: 82%; right: 24%; }
+        .clock-face .dot-7 { top: 82%; left: 24%; }
+        .clock-face .dot-8 { top: 65%; left: 12%; }
+        .clock-face .dot-10 { top: 35%; left: 12%; }
+        .clock-face .dot-11 { top: 18%; left: 24%; }
+
+        .clock-hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 4px;
+        }
+
+        .hour-hand {
+            width: 5px;
+            height: 45px;
+            background: linear-gradient(to top, #1d1d1f, #3d3d3f);
+            margin-left: -2.5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .minute-hand {
+            width: 4px;
+            height: 60px;
+            background: linear-gradient(to top, #1d1d1f, #4a4a4c);
+            margin-left: -2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 70px;
+            background: linear-gradient(to top, #ff3b30, #ff6b6b);
+            margin-left: -1px;
+            box-shadow: 0 2px 6px rgba(255, 59, 48, 0.4);
+        }
+
+        .clock-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 14px;
+            height: 14px;
+            background: linear-gradient(145deg, #ff3b30, #ff6b6b);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 6px rgba(255, 59, 48, 0.5);
+            z-index: 10;
+        }
+
+        .clock-date {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .clock-date .date-day {
+            font-size: 3.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .clock-date .date-weekday {
+            font-size: 1.3em;
+            font-weight: 500;
+            color: #667eea;
+        }
+
+        .clock-date .date-month {
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #888;
+        }
+
+        /* Dark模式时钟样式 */
+        body.dark-mode .clock-face {
+            background: linear-gradient(145deg, #2d2d4a, #1a1a2e);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.4),
+                0 4px 10px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.1),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .clock-face::before,
+        body.dark-mode .clock-face::after,
+        body.dark-mode .clock-face .hour-3,
+        body.dark-mode .clock-face .hour-9 {
+            color: #f5f5f7;
+        }
+
+        body.dark-mode .clock-face .dot-marker {
+            background: #f5f5f7;
+        }
+
+        body.dark-mode .hour-hand {
+            background: linear-gradient(to top, #f5f5f7, #c0c0c2);
+        }
+
+        body.dark-mode .minute-hand {
+            background: linear-gradient(to top, #f5f5f7, #d0d0d2);
+        }
+
+        body.dark-mode .clock-date .date-day {
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.dark-mode .clock-date .date-weekday {
+            color: #a78bfa;
+        }
+
+        body.dark-mode .clock-date .date-month {
+            color: rgba(245, 245, 247, 0.6);
+        }
+
+        #digitalTimeItem {
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <div class="control-buttons">
+        <button class="control-btn" onclick="togglePage()" title="考场安排" id="pageToggleBtn">
+            <i class="fas fa-th"></i>
+        </button>
+        <button class="control-btn" onclick="zoomOut()" title="缩小">
+            <i class="fas fa-search-minus"></i>
+        </button>
+
+        <button class="control-btn" onclick="zoomIn()" title="放大">
+            <i class="fas fa-search-plus"></i>
+        </button>
+        <button class="control-btn" onclick="showHelp()" title="帮助">
+            <i class="fas fa-question-circle"></i>
+        </button>
+        <button class="control-btn" onclick="exportConfig()" title="导出配置">
+            <i class="fas fa-download"></i>
+        </button>
+        <label class="control-btn" title="导入配置" style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-upload"></i>
+            <input type="file" class="file-input" accept=".json" onchange="importConfig(event)" style="display: none;">
+        </label>
+        <button class="control-btn" onclick="clearLocalStorage()" title="清除缓存">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+        <button class="control-btn" onclick="toggleDarkMode()" title="夜间模式" id="darkModeBtn">
+            <i class="fas fa-moon"></i>
+        </button>
+        <button class="control-btn" onclick="toggleFullscreen()" title="全屏模式" id="fullscreenBtn">
+            <i class="fas fa-expand"></i>
+        </button>
+        <button class="control-btn" onclick="toggleLock()" title="锁定/解锁" id="lockBtn">
+            <i class="fas fa-lock"></i>
+        </button>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1 class="title" id="examTitle">考试管理系统</h1>
-            <div class="control-buttons">
-                <button class="control-btn" onclick="togglePage()" title="考场安排" id="pageToggleBtn">
-                    <i class="fas fa-th"></i>
-                </button>
-                <button class="control-btn" onclick="zoomOut()" title="缩小">
-                    <i class="fas fa-search-minus"></i>
-                </button>
-
-                <button class="control-btn" onclick="zoomIn()" title="放大">
-                    <i class="fas fa-search-plus"></i>
-                </button>
-                <button class="control-btn" onclick="showHelp()" title="帮助">
-                    <i class="fas fa-question-circle"></i>
-                </button>
-                <button class="control-btn" onclick="exportConfig()" title="导出配置">
-                    <i class="fas fa-download"></i>
-                </button>
-                <label class="control-btn" title="导入配置" style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-upload"></i>
-                    <input type="file" class="file-input" accept=".json" onchange="importConfig(event)" style="display: none;">
-                </label>
-                <button class="control-btn" onclick="clearLocalStorage()" title="清除缓存">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-                <button class="control-btn" onclick="toggleDarkMode()" title="夜间模式" id="darkModeBtn">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button class="control-btn" onclick="toggleFullscreen()" title="全屏模式" id="fullscreenBtn">
-                    <i class="fas fa-expand"></i>
-                </button>
-                <button class="control-btn" onclick="toggleLock()" title="锁定/解锁" id="lockBtn">
-                    <i class="fas fa-lock"></i>
-                </button>
-            </div>
         </div>
 
         <div class="time-display">
             <div class="time-grid">
-                <div class="time-item">
+                <div class="time-item" id="digitalTimeItem" onclick="toggleClockStyle()">
                     <div class="time-label"></div>
                     <div class="time-value" id="currentTime">--:--:--</div>
+                </div>
+                <div class="time-item analog-clock-item" id="analogTimeItem" onclick="toggleClockStyle()" style="display: none;">
+                    <div class="analog-clock" id="analogClock">
+                        <div class="clock-face">
+                            <span class="hour-3">3</span>
+                            <span class="hour-9">9</span>
+                            <span class="dot-marker dot-1"></span>
+                            <span class="dot-marker dot-2"></span>
+                            <span class="dot-marker dot-4"></span>
+                            <span class="dot-marker dot-5"></span>
+                            <span class="dot-marker dot-7"></span>
+                            <span class="dot-marker dot-8"></span>
+                            <span class="dot-marker dot-10"></span>
+                            <span class="dot-marker dot-11"></span>
+                            <div class="clock-hand hour-hand" id="hourHand"></div>
+                            <div class="clock-hand minute-hand" id="minuteHand"></div>
+                            <div class="clock-hand second-hand" id="secondHand"></div>
+                            <div class="clock-center"></div>
+                        </div>
+                        <div class="clock-date" id="analogDate">
+                            <div class="date-day"></div>
+                            <div class="date-weekday"></div>
+                            <div class="date-month"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="time-item">
                     <div class="time-label" id="countdownLabel"></div>
@@ -1490,6 +1826,7 @@
             startTimeUpdate();
             startReminderCheck();
             loadSettings();
+            loadStudentsFromFile(); // 自动加载最新的学生数据文件
             loadClassStudentsFromStorage(); // 恢复班级学生信息
             loadExamRoomFromStorage(); // 恢复考场信息
         });
@@ -1811,13 +2148,74 @@
             return `${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`;
         }
 
+        // 更新时间显示
+        let isAnalogClock = false;
+
         // 开始时间更新
         function startTimeUpdate() {
+            // 恢复时钟样式
+            const savedClockStyle = localStorage.getItem('clockStyle');
+            if (savedClockStyle === 'analog') {
+                isAnalogClock = true;
+                const digitalItem = document.getElementById('digitalTimeItem');
+                const analogItem = document.getElementById('analogTimeItem');
+                if (digitalItem) digitalItem.style.display = 'none';
+                if (analogItem) analogItem.style.display = 'flex';
+            }
+            
             updateTime();
             setInterval(updateTime, 1000);
         }
 
-        // 更新时间显示
+        function toggleClockStyle() {
+            isAnalogClock = !isAnalogClock;
+            const digitalItem = document.getElementById('digitalTimeItem');
+            const analogItem = document.getElementById('analogTimeItem');
+            
+            if (isAnalogClock) {
+                digitalItem.style.display = 'none';
+                analogItem.style.display = 'flex';
+                updateAnalogClock();
+            } else {
+                digitalItem.style.display = 'flex';
+                analogItem.style.display = 'none';
+            }
+            
+            localStorage.setItem('clockStyle', isAnalogClock ? 'analog' : 'digital');
+        }
+
+        function updateAnalogClock() {
+            if (!isAnalogClock) return;
+            
+            const now = new Date();
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            
+            const hourDeg = (hours * 30) + (minutes * 0.5);
+            const minuteDeg = (minutes * 6) + (seconds * 0.1);
+            const secondDeg = seconds * 6;
+            
+            const hourHand = document.getElementById('hourHand');
+            const minuteHand = document.getElementById('minuteHand');
+            const secondHand = document.getElementById('secondHand');
+            
+            if (hourHand) hourHand.style.transform = `rotate(${hourDeg}deg)`;
+            if (minuteHand) minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+            if (secondHand) secondHand.style.transform = `rotate(${secondDeg}deg)`;
+            
+            const analogDate = document.getElementById('analogDate');
+            if (analogDate) {
+                const dayEl = analogDate.querySelector('.date-day');
+                const weekdayEl = analogDate.querySelector('.date-weekday');
+                const monthEl = analogDate.querySelector('.date-month');
+                
+                if (dayEl) dayEl.textContent = now.getDate();
+                if (weekdayEl) weekdayEl.textContent = now.toLocaleDateString('zh-CN', { weekday: 'long' });
+                if (monthEl) monthEl.textContent = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long' });
+            }
+        }
+
         function updateTime() {
             const now = new Date();
             
@@ -1835,6 +2233,9 @@
                 weekday: 'long'
             });
             document.getElementById('currentTime').innerHTML = `<div style="font-size: 2.2em; font-weight: bold; background: linear-gradient(45deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 5px;">${timeOnly}</div><div style="font-size: 0.8em; color: #666;">${dateOnly}</div>`;
+            
+            // 更新圆形时钟
+            updateAnalogClock();
             
             // 考试倒计时或进度
             updateCountdown(now);
@@ -2666,7 +3067,8 @@
                 localStorage.clear();
                 showNotification('本地数据已清除，系统即将刷新');
                 setTimeout(() => {
-                    location.reload();
+                    // 刷新页面，强制重新加载最新的students.json文件
+                    location.reload(true);
                 }, 1000);
             }
         }
@@ -3200,30 +3602,30 @@
         // 自动加载学生数据文件
         async function loadStudentsFromFile() {
             try {
-                // 首先尝试加载 students.json
-                let response = await fetch('./students.json');
+                // 首先尝试加载 students.json（添加时间戳防止缓存）
+                let response = await fetch('./students.json?_=' + new Date().getTime());
                 if (response.ok) {
                     const data = await response.json();
                     if (Array.isArray(data) && data.length > 0) {
                         studentsData = data;
-                        // 注释掉自动保存到localStorage，改为只在考试结束后恢复
-                        // localStorage.setItem('studentsData', JSON.stringify(studentsData));
+                        // 保存到localStorage，确保下次加载更快
+                        localStorage.setItem('studentsData', JSON.stringify(studentsData));
                         
                         // 静默加载成功
                         return;
                     }
                 }
                 
-                // 如果 students.json 不存在或为空，尝试加载 students.csv
-                response = await fetch('./students.csv');
+                // 如果 students.json 不存在或为空，尝试加载 students.csv（添加时间戳防止缓存）
+                response = await fetch('./students.csv?_=' + new Date().getTime());
                 if (response.ok) {
                     const csvText = await response.text();
                     if (csvText.trim()) {
                         const data = parseCSV(csvText);
                         if (data.length > 0) {
                             studentsData = data;
-                            // 注释掉自动保存到localStorage，改为只在考试结束后恢复
-                            // localStorage.setItem('studentsData', JSON.stringify(studentsData));
+                            // 保存到localStorage，确保下次加载更快
+                            localStorage.setItem('studentsData', JSON.stringify(studentsData));
                             
                             // 静默加载成功
                             return;
@@ -3455,8 +3857,8 @@
             
             // 按班级座号排序
             classStudents.sort((a, b) => {
-                const seatA = parseInt(a['班级座号'] || a['座号'] || a['座位号'] || 0);
-                const seatB = parseInt(b['班级座号'] || b['座号'] || b['座位号'] || 0);
+                const seatA = parseInt(a['班级座号'] || a['座位号'] || a['座号'] || 0);
+                const seatB = parseInt(b['班级座号'] || b['座位号'] || b['座号'] || 0);
                 return seatA - seatB;
             });
             
@@ -3907,17 +4309,10 @@
         // 切换锁定状态
         function toggleLock() {
             if (isLocked) {
-                // 当前是锁定状态，需要输入密码解锁
-                const inputPassword = prompt('请输入解锁密码：');
-                if (inputPassword === unlockPassword) {
-                    isLocked = false;
-                    updateLockState();
-                    showNotification('已解锁', 'success');
-                } else if (inputPassword !== null) {
-                    showNotification('密码错误', 'error');
-                }
+                isLocked = false;
+                updateLockState();
+                showNotification('已解锁', 'success');
             } else {
-                // 当前是解锁状态，直接锁定
                 isLocked = true;
                 updateLockState();
                 showNotification('已锁定', 'success');
