@@ -80,6 +80,6 @@
  
  支持在不同设备间导入导出配置
 ## 主页截图
-<img width="1920" height="1040" alt="2" src="https://github.com/user-attachments/assets/41267532-e33f-4157-8eeb-c7fd6dd09c9f" />
-<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/fdbf2013-2efe-4cc2-836e-8facd6235684" />
-<img width="1920" height="1040" alt="1" src="https://github.com/user-attachments/assets/77f3e884-e464-4f20-a260-c7f5e98dc5d0" />
+<img width="1920" height="1040" alt="1" src="https://github.com/user-attachments/assets/016851f0-1915-43ba-957d-4647fb5bb050" />
+<img width="1920" height="1080" alt="2" src="https://github.com/user-attachments/assets/336700e3-a4b5-4d15-bab9-9ea619b24c4d" />
+<img width="1920" height="1040" alt="3" src="https://github.com/user-attachments/assets/785aa5da-8f0d-4e79-a24d-83cde7eb55fe" />
